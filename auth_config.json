@@ -2,7 +2,7 @@
   "domain": "dev-6ah8h8m1u2qzlhdw.us.auth0.com",
   "clientId": "JAfgKZgqzB2YXqFB34DOs4yDVjTeEaxP",
   "authorizationParams": {
-    "audience": "https://the_guardian"
+    "audience": "https://optical-factory"
   },
   "apiUri": "http://localhost:3001",
   "appUri": "http://localhost:4200",
