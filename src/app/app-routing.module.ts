@@ -6,6 +6,8 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { ExternalApiComponent } from './pages/external-api/external-api.component';
 import { ErrorComponent } from './pages/error/error.component';
 import { authGuardFn } from '@auth0/auth0-angular';
+import { AuthComponent } from './pages/auth/auth.component';
+import { LoginComponent } from './components/login/login.component';
 
 export const routes: Routes = [
   {
@@ -21,10 +23,16 @@ export const routes: Routes = [
   {
     path: 'error',
     component: ErrorComponent,
+    canActivate: [authGuardFn],
+  },
+  {
+    path: 'home',
+    component: HomeComponent,
+    canActivate: [authGuardFn],
   },
   {
     path: '',
-    component: HomeComponent,
-    pathMatch: 'full',
+    component: LoginComponent,
   },
+
 ];

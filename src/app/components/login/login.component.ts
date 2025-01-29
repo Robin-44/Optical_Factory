@@ -4,13 +4,13 @@ import { AuthService } from '@auth0/auth0-angular';
 import { Router, RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-nav-bar',
+  selector: 'app-login',
   imports: [CommonModule, RouterModule],
   standalone: true,
-  templateUrl: './nav-bar.component.html',
-  styleUrls: ['./nav-bar.component.css']
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
 })
-export class NavBarComponent {
+export class LoginComponent {
   isExpanded = false;
 
   constructor(private router:Router,public auth: AuthService,
