@@ -29,6 +29,9 @@ export class LoginComponent {
   }
   login() {
     this.auth.loginWithRedirect();
+    if(this.auth){
+      this.router.navigate(['/home']);
+    }
   }
   link_home(){
     this.router.navigate(['/home'])

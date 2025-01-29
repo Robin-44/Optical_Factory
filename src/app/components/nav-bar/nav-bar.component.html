@@ -10,9 +10,7 @@
       <a routerLink="/" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" [class.expanded]="isExpanded">
         <i class="ph ph-house"></i>
         <span>Accueil</span>
-      </a>
-
-    
+      </a>    
 
     <!-- Menu items for authenticated users -->
     <ng-container *ngIf="auth.isAuthenticated$ | async">

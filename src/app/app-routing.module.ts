@@ -23,16 +23,20 @@ export const routes: Routes = [
   {
     path: 'error',
     component: ErrorComponent,
-    canActivate: [authGuardFn],
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
   },
   {
     path: 'home',
-    component: HomeComponent,
     canActivate: [authGuardFn],
+    component: HomeComponent
   },
+
   {
     path: '',
-    component: LoginComponent,
+    component: HomeComponent
   },
 
 ];
