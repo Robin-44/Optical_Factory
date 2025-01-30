@@ -7,7 +7,7 @@
   }
 
   i  {
-    color: #333;
+    color: #000;
   }
   
   .user-section {
@@ -24,7 +24,7 @@
     z-index: 1000;
     display: flex;
     flex-direction: column;
-    background-color: green;
+    background-color: #fff;
     color: #fff;
     box-shadow: 2px 0 20px rgba(0, 0, 0, 0.1);
   }

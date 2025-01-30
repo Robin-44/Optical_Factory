@@ -1,6 +1,55 @@
-<footer class="">
-    <div class=""></div>
-    <p>
-      Optical factory
-    </p>
-  </footer>
+<footer>
+  <nav class="footer-nav">
+   
+
+    <div *ngIf="auth.isAuthenticated$ | async">
+      <a routerLink="/" class="footer-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+        <i class="fas fa-home"></i>
+        <span>Accueil</span>
+      </a>
+
+      <a class="footer-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+        <i class="fas fa-glasses"></i>
+        <span>Lunettes de vues</span>
+      </a>
+    </div>
+
+    <div *ngIf="auth.isAuthenticated$ | async">
+
+      <a class="footer-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+        <i class="fas fa-sun"></i>
+        <span>Lunettes de soleil</span>
+      </a>
+
+      <a class="footer-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+        <i class="fas fa-eye"></i>
+        <span>Lentilles</span>
+      </a>
+    </div>
+
+
+    <div *ngIf="auth.isAuthenticated$ | async">
+      <a class="footer-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+        <i class="fas fa-deaf"></i>
+        <span>Audition</span>
+      </a>
+
+      <a routerLink="/profile" class="footer-item" routerLinkActive="active">
+        <i class="fas fa-user"></i>
+        <span>Profil</span>
+      </a>
+    </div>
+
+    <div *ngIf="auth.isAuthenticated$ | async">
+      <a routerLink="/external-api" class="footer-item" routerLinkActive="active">
+        <i class="fas fa-globe"></i>
+        <span>API Externe</span>
+      </a>
+  
+      <a routerLink="/settings" class="footer-item" routerLinkActive="active">
+        <i class="fas fa-cog"></i>
+        <span>Paramètres</span>
+      </a>
+    </div>
+  </nav>
+</footer>
