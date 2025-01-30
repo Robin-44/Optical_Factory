@@ -1,17 +1,72 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body>
-  <app-nav-bar></app-nav-bar>
-  <div class="banner-solde"></div>
-  <div class="banner-brand"></div>
-  <div class="news-glasse-sections">
-    
+<app-nav-bar></app-nav-bar>
+<div class="" style="margin-left:20px ;">
+  <div class="banner-solde p-4 text-center bg-danger text-white rounded">
+    <h2>🔥 Soldes Exceptionnelles 🔥</h2>
+    <p>Profitez de réductions incroyables sur nos lunettes !</p>
   </div>
+<img src="../../../assets/banner-home/banner-home.png" class="banner-home" />
  
-</body>
-</html>
+
+
+  <div class="banner-brand mt-4">
+    <h2 class="text-center">✨ Tendances du moment ✨</h2>
+    <div class="d-flex flex-wrap justify-content-center gap-3 mt-3">
+      <div *ngFor="let tendance of tendances" class="card shadow-sm p-3">
+        <img [src]="tendance.image" class="card-img-top rounded" alt="{{tendance.nom}}">
+        <div class="card-body text-center">
+          <h5 class="card-title">{{tendance.nom}}</h5>
+          <p class="card-text">{{tendance.description}}</p>
+          <p class="price">{{tendance.prix}}</p>
+          <button class="btn-dark p-1">Je découvre</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="banner-brand mt-4">
+    <h2 class="text-center">Sélection Opticien</h2>
+    <div class="d-flex flex-wrap justify-content-center gap-3 mt-3">
+      <div *ngFor="let selection_optician of selection_opticians" class="card shadow-sm p-3">
+        <img [src]="selection_optician.image" class="card-img-top rounded" alt="{{selection_optician.nom}}">
+        <div class="card-body text-center">
+          <h5 class="card-title">{{selection_optician.nom}}</h5>
+          <p class="card-text">{{selection_optician.description}}</p>
+          <p class="price">{{selection_optician.prix}}</p>
+          <button class="btn-dark p-1">Je découvre</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="banner-brand mt-4">
+    <h2 class="text-center">Meilleurs Ventes</h2>
+    <div class="d-flex flex-wrap justify-content-center gap-3 mt-3">
+      <div *ngFor="let best_sale of best_sales" class="card shadow-sm p-3">
+        <img [src]="best_sale.image" class="card-img-top rounded" alt="{{best_sale.nom}}">
+        <div class="card-body text-center">
+          <h5 class="card-title">{{best_sale.nom}}</h5>
+          <p class="card-text">{{best_sale.description}}</p>
+          <p class="price">{{best_sale.prix}}</p>
+          <button class="btn-dark p-1">Je découvre</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="banner-brand mt-4">
+    <h2 class="text-center">Inovations</h2>
+    <div class="d-flex flex-wrap justify-content-center gap-3 mt-3">
+      <div *ngFor="let innovation of innovations" class="card-IA shadow-sm p-3">
+        <img [src]="innovation.image" class="card-img-top rounded" alt="{{innovation.nom}}">
+        <div class="card-body text-center">
+          <h5 class="card-title">{{innovation.nom}}</h5>
+          <p class="card-text">{{innovation.description}}</p>
+          <p class="price">{{innovation.prix}}</p>
+          <button class="btn-dark p-1">Je découvre</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
