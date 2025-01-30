@@ -6,7 +6,8 @@ import { LoadingComponent } from './../../components/loading/loading.component';
 import { AsyncPipe, CommonModule, NgIf } from '@angular/common';
 import { Router } from '@angular/router';
 import { NavBarComponent } from 'src/app/components/nav-bar/nav-bar.component';
-
+import { ApiService } from 'src/app/api.service';
+import { Monture } from '../../../models/monture.model'; 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -24,6 +25,7 @@ import { NavBarComponent } from 'src/app/components/nav-bar/nav-bar.component';
 })
 
 export class HomeComponent {
+  montures: Monture[] = [];
   @Input() tendances = [
     {
       nom: "Lunettes de Soleil Ray-Ban",
@@ -107,8 +109,10 @@ export class HomeComponent {
       prix: "149.99€"
     }
   ];
+
   
-  constructor(public router: Router,public auth: AuthService) {}
+  
+  constructor(public router: Router,public auth: AuthService,public apiService:ApiService) {}
 
 
   ngOnInit() {
@@ -122,5 +126,17 @@ export class HomeComponent {
         this.router.navigate(['/login']); 
       }
     });
+
+
+    this.apiService.getClients$().subscribe(
+      (data) => {
+        this.montures = data;
+      },
+      (error) => {
+        console.error('There was an error fetching clients!', error);
+      }
+    );
   }
+
+
 }
