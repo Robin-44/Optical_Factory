@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import config from '../../auth_config.json';
-import { Monture } from 'src/models/monture.model';
 import { Observable } from 'rxjs';
+import { Monture } from 'src/models/monture.model';
 
 @Injectable({
   providedIn: 'root',
@@ -15,104 +15,44 @@ export class ApiService {
     return this.http.get(`${config.apiUri}/api/external`);
   }
 
-  // Clients Methods
-  createClient(clientData: any) {
-    return this.http.post(`${config.apiUri}/api/clients`, clientData);
+  // **Clients Methods** (Si nécessaire pour récupérer des données liées aux clients)
+  getClients$(): Observable<any[]> {
+    return this.http.get<any[]>(`${config.apiUri}/api/clients`);
   }
 
-  getClientById$(clientId: string) {
-    return this.http.get(`${config.apiUri}/api/clients/${clientId}`);
+  // **Montures Methods** (Pour récupérer les données des montures)
+  getMontures$(): Observable<any[]> {
+    return this.http.get<any[]>(`${config.apiUri}/api/montures`);
   }
 
-  updateClient(clientId: string, clientData: any) {
-    return this.http.put(`${config.apiUri}/api/clients/${clientId}`, clientData);
+  getMontureById$(montureId: string): Observable<any> {
+    return this.http.get<any>(`${config.apiUri}/api/montures/${montureId}`);
   }
 
-  deleteClient(clientId: string) {
-    return this.http.delete(`${config.apiUri}/api/clients/${clientId}`);
+  // **Verres Methods** (Pour récupérer les données des verres)
+  getVerres$(): Observable<any[]> {
+    return this.http.get<any[]>(`${config.apiUri}/api/verres`);
   }
 
-  // Montures Methods
-  createMonture(montureData: any) {
-    return this.http.post(`${config.apiUri}/api/montures`, montureData);
+  getVerreById$(verreId: string): Observable<any> {
+    return this.http.get<any>(`${config.apiUri}/api/verres/${verreId}`);
   }
 
-  getClients$(): Observable<Monture[]> {
-    return this.http.get<Monture[]>(`${config.apiUri}`);
+  // **Commandes Methods** (Pour récupérer les données des commandes)
+  getCommandes$(): Observable<any[]> {
+    return this.http.get<any[]>(`${config.apiUri}/api/commandes`);
   }
 
-  getMontureById$(montureId: string) {
-    return this.http.get(`${config.apiUri}/api/montures/${montureId}`);
+  getCommandeById$(commandeId: string): Observable<any> {
+    return this.http.get<any>(`${config.apiUri}/api/commandes/${commandeId}`);
   }
 
-  updateMonture(montureId: string, montureData: any) {
-    return this.http.put(`${config.apiUri}/api/montures/${montureId}`, montureData);
+  // **Prescriptions Methods** (Non utilisé ici, mais vous pouvez l'utiliser pour gérer les prescriptions)
+  getPrescriptions$(): Observable<any[]> {
+    return this.http.get<any[]>(`${config.apiUri}/api/prescriptions`);
   }
 
-  deleteMonture(montureId: string) {
-    return this.http.delete(`${config.apiUri}/api/montures/${montureId}`);
-  }
-
-  // Verres Methods
-  createVerre(verreData: any) {
-    return this.http.post(`${config.apiUri}/api/verres`, verreData);
-  }
-
-  getVerres$() {
-    return this.http.get(`${config.apiUri}/api/verres`);
-  }
-
-  getVerreById$(verreId: string) {
-    return this.http.get(`${config.apiUri}/api/verres/${verreId}`);
-  }
-
-  updateVerre(verreId: string, verreData: any) {
-    return this.http.put(`${config.apiUri}/api/verres/${verreId}`, verreData);
-  }
-
-  deleteVerre(verreId: string) {
-    return this.http.delete(`${config.apiUri}/api/verres/${verreId}`);
-  }
-
-  // Commandes Methods
-  createCommande(commandeData: any) {
-    return this.http.post(`${config.apiUri}/api/commandes`, commandeData);
-  }
-
-  getCommandes$() {
-    return this.http.get(`${config.apiUri}/api/commandes`);
-  }
-
-  getCommandeById$(commandeId: string) {
-    return this.http.get(`${config.apiUri}/api/commandes/${commandeId}`);
-  }
-
-  updateCommande(commandeId: string, commandeData: any) {
-    return this.http.put(`${config.apiUri}/api/commandes/${commandeId}`, commandeData);
-  }
-
-  deleteCommande(commandeId: string) {
-    return this.http.delete(`${config.apiUri}/api/commandes/${commandeId}`);
-  }
-
-  // Prescriptions Methods
-  createPrescription(prescriptionData: any) {
-    return this.http.post(`${config.apiUri}/api/prescriptions`, prescriptionData);
-  }
-
-  getPrescriptions$() {
-    return this.http.get(`${config.apiUri}/api/prescriptions`);
-  }
-
-  getPrescriptionById$(prescriptionId: string) {
-    return this.http.get(`${config.apiUri}/api/prescriptions/${prescriptionId}`);
-  }
-
-  updatePrescription(prescriptionId: string, prescriptionData: any) {
-    return this.http.put(`${config.apiUri}/api/prescriptions/${prescriptionId}`, prescriptionData);
-  }
-
-  deletePrescription(prescriptionId: string) {
-    return this.http.delete(`${config.apiUri}/api/prescriptions/${prescriptionId}`);
+  getPrescriptionById$(prescriptionId: string): Observable<any> {
+    return this.http.get<any>(`${config.apiUri}/api/prescriptions/${prescriptionId}`);
   }
 }
