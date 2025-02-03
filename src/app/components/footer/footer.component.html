@@ -1,55 +1,44 @@
 <footer>
   <nav class="footer-nav">
-   
-
-    <div *ngIf="auth.isAuthenticated$ | async">
-      <a routerLink="/" class="footer-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-        <i class="fas fa-home"></i>
-        <span>Accueil</span>
+    <div>
+      <a class="footer-item" routerLink="/cgu" routerLinkActive="active">
+        <i class="fas fa-scale-unbalanced-flip"></i>
+        <span>CGU</span>
       </a>
-
-      <a class="footer-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-        <i class="fas fa-glasses"></i>
-        <span>Lunettes de vues</span>
+      <a class="footer-item" routerLink="/cgv" routerLinkActive="active">
+        <i class="fas fa-scale-unbalanced"></i>
+        <span>CGV</span>
       </a>
     </div>
-
-    <div *ngIf="auth.isAuthenticated$ | async">
-
-      <a class="footer-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-        <i class="fas fa-sun"></i>
-        <span>Lunettes de soleil</span>
+    <div>
+      <a class="footer-item" routerLink="/faq" routerLinkActive="active">
+        <i class="fas fa-circle-info"></i>
+        <span>FAQ</span>
       </a>
-
-      <a class="footer-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-        <i class="fas fa-eye"></i>
-        <span>Lentilles</span>
-      </a>
+      <a class="footer-item" routerLink="/contact" routerLinkActive="active">
+        <i class="fas fa-address-book"></i>
+        <span>Contact</span>
+      </a> 
     </div>
-
-
-    <div *ngIf="auth.isAuthenticated$ | async">
-      <a class="footer-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-        <i class="fas fa-deaf"></i>
-        <span>Audition</span>
-      </a>
-
-      <a routerLink="/profile" class="footer-item" routerLinkActive="active">
-        <i class="fas fa-user"></i>
-        <span>Profil</span>
-      </a>
+    <div>
+      <a class="footer-item" routerLink="/mentions-legales" routerLinkActive="active">
+        <i class="fas fa-shield-halved"></i>
+        <span>Mentions Légales</span>
+      </a> 
+      <a class="footer-item" routerLink="/cookies" routerLinkActive="active">
+        <i class="fas fa-cookie"></i>
+        <span>Cookies</span>
+      </a> 
     </div>
-
-    <div *ngIf="auth.isAuthenticated$ | async">
-      <a routerLink="/external-api" class="footer-item" routerLinkActive="active">
-        <i class="fas fa-globe"></i>
-        <span>API Externe</span>
-      </a>
-  
-      <a routerLink="/settings" class="footer-item" routerLinkActive="active">
-        <i class="fas fa-cog"></i>
-        <span>Paramètres</span>
-      </a>
+    <div>
+      <a class="footer-item" routerLink="/politique-de-confidentialite" routerLinkActive="active">
+        <i class="fas fa-user-lock"></i>
+        <span>Politique de confidentialité</span>
+      </a> 
+      <a class="footer-item" routerLink="/retour-remboursement" routerLinkActive="active">
+        <i class="fas fa-solid fa-truck-fast"></i>
+        <span>Retours & Remboursements</span>
+      </a> 
     </div>
   </nav>
 </footer>
