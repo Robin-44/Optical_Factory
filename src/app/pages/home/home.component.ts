@@ -1,13 +1,14 @@
-import { Component, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
-import { HomeContentComponent } from './../../components/home-content/home-content.component';
-import { HeroComponent } from './../../components/hero/hero.component';
-import { LoadingComponent } from './../../components/loading/loading.component';
-import { AsyncPipe, CommonModule, NgIf } from '@angular/common';
 import { Router } from '@angular/router';
-import { NavBarComponent } from 'src/app/components/nav-bar/nav-bar.component';
 import { ApiService } from 'src/app/api.service';
 import { Monture } from '../../../models/monture.model'; 
+import { HomeContentComponent } from 'src/app/components/home-content/home-content.component';
+import { HeroComponent } from 'src/app/components/hero/hero.component';
+import { NavBarComponent } from 'src/app/components/nav-bar/nav-bar.component';
+import { LoadingComponent } from 'src/app/components/loading/loading.component';
+import { AsyncPipe, CommonModule, NgIf } from '@angular/common';
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -24,96 +25,14 @@ import { Monture } from '../../../models/monture.model';
   ]
 })
 
-export class HomeComponent {
-  montures: Monture[] = [];
-  @Input() tendances = [
-    {
-      nom: "Lunettes de Soleil Ray-Ban",
-      image: "assets/home/products/sunset-1283872_1280.jpg",
-      description: "Style et protection UV au rendez-vous.",
-      prix: "149.99€"
-    },
-    {
-      nom: "Lentilles de Contact HydraSoft",
-      image: "assets/home/products/pexels-thebstudio-947885.jpg",
-      description: "Une vision nette avec un confort exceptionnel.",
-      prix: "29.99€"
-    },
-    {
-      nom: "Lunettes de Soleil Gucci",
-      image: "assets/home/products/kiran-ck-lSl94SZHRgA-unsplash.jpg",
-      description: "L'élégance au service de votre regard.",
-      prix: "199.99€"
-    }
-  ];
-  
+export class HomeComponent implements OnInit {
+  montures: Monture[] = []; 
+  tendances: Monture[] = []; 
+  innovations: Monture[] = []; 
+  selection_opticians: Monture[] = []; 
+  best_sales: Monture[] = []; 
 
-  @Input() innovations = [
-    {
-      nom: "IA - Essayage virtuel",
-      image: "assets/home/products/fetchIA-glasses.png",
-      description: "Style et protection UV au rendez-vous.",
-      prix: "149.99€"
-    }
-  ];
-  @Input() selection_opticians = [
-    {
-      nom: "Lunettes de Soleil Prada",
-      image: "assets/home/products/pexels-stephendn-131018.jpg",
-      description: "Un style unique et une protection assurée.",
-      prix: "159.99€"
-    },
-    {
-      nom: "Lunettes de Vue Chanel",
-      image: "assets/home/products/redowan-dhrubo-OWfBsDDOUlQ-unsplash.jpg",
-      description: "Élégance et confort réunis dans un design moderne.",
-      prix: "249.99€"
-    },
-    {
-      nom: "Lentilles de Contact Air Optix",
-      image: "assets/home/products/na-sen-e9uWKA9-CFE-unsplash.jpg",
-      description: "Des lentilles ultra-fines pour un port agréable.",
-      prix: "39.99€"
-    },
-    {
-      nom: "Lunettes de Soleil Versace",
-      image: "assets/home/products/bartosz-sujkowski-uxzWfwOIyT8-unsplash.jpg",
-      description: "Un design luxueux pour une touche de glamour.",
-      prix: "229.99€"
-    }
-  ];
-  
-  @Input() best_sales = [
-    {
-      nom: "Lunettes de Soleil Dior",
-      image: "assets/home/products/anton-be-ODhxNCO8XHY-unsplash.jpg",
-      description: "Un look raffiné pour les journées ensoleillées.",
-      prix: "179.99€"
-    },
-    {
-      nom: "Lunettes de Vue Hugo Boss",
-      image: "assets/home/products/eyekeeper-eyekeeper-VtFvDYh7Qvc-unsplash.jpg",
-      description: "Une monture élégante pour une vision parfaite.",
-      prix: "199.99€"
-    },
-    {
-      nom: "Lentilles de Contact Bausch & Lomb",
-      image: "assets/home/products/ivan-cruz-crBbisAE40U-unsplash.jpg",
-      description: "Un confort durable tout au long de la journée.",
-      prix: "34.99€"
-    },
-    {
-      nom: "Lunettes de Soleil Police",
-      image: "assets/home/products/eyekeeper-eyekeeper-cyQtEO1nvxw-unsplash.jpg",
-      description: "Un style audacieux pour affirmer votre personnalité.",
-      prix: "149.99€"
-    }
-  ];
-
-  
-  
-  constructor(public router: Router,public auth: AuthService,public apiService:ApiService) {}
-
+  constructor(public router: Router, public auth: AuthService, public apiService: ApiService) {}
 
   ngOnInit() {
     // Vérifiez si l'utilisateur est déjà authentifié et redirigez-le
@@ -121,22 +40,42 @@ export class HomeComponent {
       console.log(isAuthenticated)
       if (isAuthenticated) {
         // Si l'utilisateur est authentifié, redirigez-le vers la page d'accueil
-        this.router.navigate(['/home']); // Remplacez "/home" par le chemin de votre page d'accueil
+        this.router.navigate(['/home']); 
       } else {
         this.router.navigate(['/login']); 
       }
     });
 
+    // Appels API pour récupérer les données
+    this.loadMontures();
+    /*this.loadTendances();
+    this.loadInnovations();
+    this.loadSelectionOpticians();
+    this.loadBestSales();*/
+  }
 
-    this.apiService.getClients$().subscribe(
+  // Charger les montures
+  loadMontures() {
+    this.apiService.getMontures$().subscribe(
       (data) => {
         this.montures = data;
+  
+        // Création des tableaux filtrés
+        this.tendances = this.montures.filter(m => m.selected?.includes("tendance"));
+        this.best_sales = this.montures.filter(m => m.selected?.includes("best_sales"));
+        this.selection_opticians = this.montures.filter(m => m.selected?.includes("selection_optician"));
+        this.innovations = this.montures.filter(m => m.selected?.includes("innovations"));
+  
+        console.log("Montures tendances :", this.tendances);
+        console.log("Meilleures ventes :", this.best_sales);
+        console.log("Sélection opticien :", this.selection_opticians);
       },
       (error) => {
-        console.error('There was an error fetching clients!', error);
+        console.error("Error fetching montures", error);
       }
     );
   }
+  
 
 
 }
