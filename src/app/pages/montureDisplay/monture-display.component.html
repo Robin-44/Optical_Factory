@@ -1,0 +1,114 @@
+<app-nav-bar></app-nav-bar>
+<div class="" style="margin-left:20px ;">
+  <div class="banner-solde p-4 text-center bg-danger text-white rounded">
+    <h2>🔥 Soldes Exceptionnelles 🔥</h2>
+    <p>Profitez de réductions incroyables sur nos lunettes !</p>
+  </div>
+<img src="../../../assets/home/footer/banner-home.png" class="banner-home" />
+ 
+
+<div *ngIf="monture" class=" monture-container">
+  <div class="img-monture">
+    <div class="container_001">
+      <img [src]="monture.img" alt="Image de la monture" class="monture-image img-fluid" />
+    </div>
+    <div class="container_002">
+      <div class="card">
+        <div class="card-body">
+
+          <!-- Détails du produit -->
+          <h5 class="card-title">{{ monture.Marque }}</h5>
+          <p class="card-text">35,99€</p>
+      
+          <!-- Informations supplémentaires -->
+          <div class="product-details">
+            <p><strong>Retours :</strong> GRATUITS</p>
+            <p><strong>Livraison :</strong> GRATUITE jeudi 6 février. <a href="#">Détails</a></p>
+            <p><strong>Ou livraison accélérée :</strong> mercredi 5 février. Commandez dans les 6 h 57 min. <a href="#">Détails</a></p>
+            <p><strong>Livrer à :</strong> Sullivan - Montfermeil 93370</p>
+            <p><strong>Stock :</strong> Il ne reste plus que 7 exemplaire(s) en stock.</p>
+          </div>
+      
+          <!-- Bouton d'action -->
+          <button class="btn btn-primary">Commander</button>
+        </div>
+      </div>
+      
+            <button class="purchase">Acheter</button>
+            <button class="add-to-shop">Ajouter au panier</button>
+          <button class="add-to-favoris">Ajouter au favoris</button>
+     
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-40">
+      <h2 class="title-monture">{{ monture.Marque }} - {{ monture.Modele }}</h2>
+      
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Propriété</th>
+            <th>Valeur</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Type:</strong></td>
+            <td>{{ monture.Type }}</td>
+          </tr>
+          <tr>
+            <td><strong>Forme:</strong></td>
+            <td>{{ monture.Forme }}</td>
+          </tr>
+          <tr>
+            <td><strong>Matériau:</strong></td>
+            <td>{{ monture.Materiau }}</td>
+          </tr>
+          <tr>
+            <td><strong>Couleur:</strong></td>
+            <td>{{ monture.Couleur }}</td>
+          </tr>
+          <tr>
+            <td><strong>Taille:</strong></td>
+            <td>{{ monture.Taille }}</td>
+          </tr>
+          <tr>
+            <td><strong>Teinte:</strong></td>
+            <td>{{ monture.Teinte }}</td>
+          </tr>
+          <tr>
+            <td><strong>Traitements:</strong></td>
+            <td>{{ monture.Traitements }}</td>
+          </tr>
+          <tr>
+            <td><strong>Indice de réfraction:</strong></td>
+            <td>{{ monture.Indice_Refraction }}</td>
+          </tr>
+          <tr>
+            <td><strong>Compatibilité:</strong></td>
+            <td>{{ monture.Compatibilite }}</td>
+          </tr>
+          <tr>
+            <td><strong>Protection:</strong></td>
+            <td>{{ monture.Categorie_Protection }}</td>
+          </tr>
+          <tr>
+            <td><strong>Sécurité:</strong></td>
+            <td>{{ monture.Securite }}</td>
+          </tr>
+          <tr>
+            <td><strong>Style:</strong></td>
+            <td>{{ monture.Style }}</td>
+          </tr>
+          <tr>
+            <td><strong>Prix:</strong></td>
+            <td><strong class="price">{{ monture.Prix }}</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    
+   
+    </div>
+    
+  </div>
+</div>

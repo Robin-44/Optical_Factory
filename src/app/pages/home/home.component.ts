@@ -38,20 +38,15 @@ export class HomeComponent implements OnInit {
     // Vérifiez si l'utilisateur est déjà authentifié et redirigez-le
     this.auth.isAuthenticated$.subscribe(isAuthenticated => {
       console.log(isAuthenticated)
-      if (isAuthenticated) {
+      if (!isAuthenticated) {
         // Si l'utilisateur est authentifié, redirigez-le vers la page d'accueil
-        this.router.navigate(['/home']); 
-      } else {
         this.router.navigate(['/login']); 
       }
     });
-
-    // Appels API pour récupérer les données
     this.loadMontures();
-    /*this.loadTendances();
-    this.loadInnovations();
-    this.loadSelectionOpticians();
-    this.loadBestSales();*/
+  }
+  goToMonturePage(montureId: string): void {
+    this.router.navigate([`/monture/${montureId}`]);  // Navigue vers la page produit avec l'ID
   }
 
   // Charger les montures

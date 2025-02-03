@@ -10,9 +10,13 @@ import { Monture } from 'src/models/monture.model';
 export class ApiService {
   constructor(private http: HttpClient) {}
 
+
   // Ping method to check API connectivity
   ping$() {
     return this.http.get(`${config.apiUri}/api/external`);
+  }
+  getMonturesById(id: string): Observable<any> {
+    return this.http.get<Monture>(`${config.apiUri}/api/monture/${id}`);
   }
 
   // **Clients Methods** (Si nécessaire pour récupérer des données liées aux clients)
@@ -25,9 +29,6 @@ export class ApiService {
     return this.http.get<any[]>(`${config.apiUri}/api/montures`);
   }
 
-  getMontureById$(montureId: string): Observable<any> {
-    return this.http.get<any>(`${config.apiUri}/api/montures/${montureId}`);
-  }
 
   // **Verres Methods** (Pour récupérer les données des verres)
   getVerres$(): Observable<any[]> {

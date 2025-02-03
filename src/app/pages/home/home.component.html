@@ -17,7 +17,7 @@
           <h5 class="card-title">{{tendance.nom}}</h5>
           <p class="card-text">{{tendance.description}}</p>
           <p class="price">{{tendance.prix}}</p>
-          <button class="btn-dark p-1">Je découvre</button>
+          <button type="button" class="btn-dark p-1" (click)="goToMonturePage(tendance._id)">Je découvre</button>
         </div>
       </div>
     </div>
@@ -32,7 +32,7 @@
           <h5 class="card-title">{{selection_optician.nom}}</h5>
           <p class="card-text">{{selection_optician.description}}</p>
           <p class="price">{{selection_optician.prix}}</p>
-          <button class="btn-dark p-1">Je découvre</button>
+          <button type="button" class="btn-dark p-1" (click)="goToMonturePage(selection_optician._id)">Je découvre</button>
         </div>
       </div>
     </div>
@@ -49,7 +49,7 @@
           <h5 class="card-title">{{best_sale.nom}}</h5>
           <p class="card-text">{{best_sale.description}}</p>
           <p class="price">{{best_sale.prix}}</p>
-          <button class="btn-dark p-1">Je découvre</button>
+          <button type="button" class="btn-dark p-1" (click)="goToMonturePage(best_sale._id)">Je découvre</button>
         </div>
       </div>
     </div>
@@ -64,7 +64,7 @@
           <h5 class="card-title">{{innovation.nom}}</h5>
           <p class="card-text">{{innovation.description}}</p>
           <p class="price">{{innovation.prix}}</p>
-          <button class="btn-dark p-1">Je découvre</button>
+          <button type="button" class="btn-dark p-1" (click)="goToMonturePage(innovation._id)">Je découvre</button>
         </div>
       </div>
     </div>

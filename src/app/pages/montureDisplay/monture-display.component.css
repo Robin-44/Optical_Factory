@@ -1,0 +1,146 @@
+.monture-container {
+    margin-top: 30px;
+  }
+  
+.monture-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+
+  .banner-solde {
+    background: linear-gradient(45deg, #ff416c, #ff4b2b);
+    padding: 20px;
+    border-radius: 10px;
+    height: 120px;
+    color: #fff;
+  }
+  .banner-solde > h2, .banner-solde > p {
+    color: #fff;
+  }
+  .container_001, .container_002 {
+    width: 50%;
+  }
+
+  .container_002 {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .img-monture {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    gap:20px;
+  }
+
+  .banner-home {
+    margin-left: 20px;
+    height: 300px;
+    width: 98%;
+  }
+  .title-monture {
+    font-size: 50px;
+    text-align: center;
+    margin-top: 30px;
+    font-weight: bold;
+  }
+.col-md-4 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+  .btn-dark {
+    margin-bottom:100px ;
+  }
+  
+  h2 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  p {
+    font-size: 18px;
+    color: #555;
+  }
+  
+  .price {
+    font-size: 24px;
+    font-weight: bold;
+    color: #28a745;
+    margin-top: 20px;
+  }
+  
+  .add-to-shop, .purchase,.add-to-favoris   {
+    margin-top: 5px;
+  
+    color: #fff;
+    padding: 5px;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+  }
+  .add-to-shop{
+    background-color: rgb(0, 141, 0)
+  } 
+  
+  .purchase {
+    background-color: #323232;
+  }
+  
+  .add-to-favoris {
+    background-color: #ffe341;
+  }
+
+
+  .card {
+    width: 100%;
+    margin: 15px auto;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+  }
+  
+  .card-body {
+    padding: 15px;
+  }
+  
+  .card-img-top {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  
+  .card-title {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+  }
+  
+  .card-text {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #2c3e50;
+  }
+  
+  .product-details {
+    margin-top: 15px;
+  }
+  
+  .product-details p {
+    margin: 5px 0;
+    font-size: 1em;
+  }
+  
+  .product-details a {
+    color: #3498db;
+    text-decoration: none;
+  }
+  
+  .product-details a:hover {
+    text-decoration: underline;
+  }
+  

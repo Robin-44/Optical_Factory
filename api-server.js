@@ -134,7 +134,7 @@ app.get('/api/montures', async (req, res) => {
   }
 });
 
-app.get('/api/montures/:id', checkJwt, async (req, res) => {
+app.get('/api/monture/:id', checkJwt, async (req, res) => {
   try {
     const monture = await db.collection('montures').findOne({ _id: new ObjectId(req.params.id) });
     if (!monture) return res.status(404).json({ message: 'Monture not found' });
