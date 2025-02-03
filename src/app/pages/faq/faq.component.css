@@ -1,0 +1,52 @@
+/* Conteneur de la FAQ */
+.faq-container {
+  width: 80%;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.faq-title {
+  text-align: center;
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Style des éléments de la FAQ */
+.faq-item {
+  margin-bottom: 15px;
+  padding: 15px;
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+}
+
+.faq-question {
+  font-size: 1.2rem;
+  color: #007bff;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.faq-answer {
+  font-size: 1rem;
+  color: #555;
+  margin-top: 10px;
+}
+
+/* Style pour la réponse au survol de la question */
+.faq-question:hover {
+  color: #0056b3;
+}
+
+/* Effet d'animation pour afficher la réponse */
+.faq-answer {
+  transition: opacity 0.3s ease-in;
+}
+
+.faq-answer.ng-animating {
+  opacity: 0;
+}
