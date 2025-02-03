@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-// Définir le schéma de la collection Clients
+// Modèle Client
 const clientSchema = new Schema({
   Nom: { type: String, required: true },
   Prenom: { type: String, required: true },
@@ -21,38 +21,7 @@ const clientSchema = new Schema({
 
 const Client = mongoose.model('Client', clientSchema);
 
-// Définir le schéma de la collection Commandes
-const commandeSchema = new Schema({
-  Client_ID: { type: mongoose.Schema.Types.ObjectId, ref: 'Client', required: true },
-  Verre_ID: { type: mongoose.Schema.Types.ObjectId, ref: 'Verre', required: true },
-  Monture_ID: { type: mongoose.Schema.Types.ObjectId, ref: 'Monture', required: true },
-  Date_Commande: { type: Date, required: true },
-  Statut: { type: String, required: true },
-  Montant_Total: { type: Number, required: true },
-  Methode_Paiement: { type: String },
-  Adresse_Livraison: { type: String },
-  Canal: { type: String }
-}, { timestamps: true });
-
-const Commande = mongoose.model('Commande', commandeSchema);
-
-// Définir le schéma de la collection Produits_Montures
-const montureSchema = new Schema({
-  Marque: { type: String },
-  Modele: { type: String },
-  Type: { type: String },
-  Forme: { type: String },
-  Materiau: { type: String },
-  Couleur: { type: String },
-  Taille: { type: String },
-  Prix: { type: Number },
-  Style: { type: String },
-  Stock: { type: Number }
-}, { timestamps: true });
-
-const Monture = mongoose.model('Monture', montureSchema);
-
-// Définir le schéma de la collection Produits_Verres
+// Modèle Verre
 const verreSchema = new Schema({
   Type: { type: String },
   Indice_Refraction: { type: Number },
@@ -68,7 +37,41 @@ const verreSchema = new Schema({
 
 const Verre = mongoose.model('Verre', verreSchema);
 
-// Définir le schéma de la collection Prescriptions
+// Modèle Monture
+const montureSchema = new Schema({
+  Marque: { type: String, required: true },
+  Modele: { type: String, required: true },
+  Type: { type: String, required: true },
+  Forme: { type: String },
+  Materiau: { type: String },
+  Couleur: { type: String },
+  Taille: { type: String },
+  img:{type: String},
+  Prix: { type: Number },
+  Style: { type: String },
+  Stock: { type: Number },
+  selected: [{ type: String }], // Ex: ['tendance', 'optician', 'best_sales']
+  Verre_ID: { type: mongoose.Schema.Types.ObjectId, ref: 'Verre' } // Association avec un verre
+}, { timestamps: true });
+
+const Monture = mongoose.model('Monture', montureSchema);
+
+// Modèle Commande
+const commandeSchema = new Schema({
+  Client_ID: { type: mongoose.Schema.Types.ObjectId, ref: 'Client', required: true },
+  Verre_ID: { type: mongoose.Schema.Types.ObjectId, ref: 'Verre', required: true },
+  Monture_ID: { type: mongoose.Schema.Types.ObjectId, ref: 'Monture', required: true },
+  Date_Commande: { type: Date, required: true },
+  Statut: { type: String, required: true }, // Ex: 'En cours', 'Livrée'
+  Montant_Total: { type: Number, required: true },
+  Methode_Paiement: { type: String },
+  Adresse_Livraison: { type: String },
+  Canal: { type: String } // Ex: 'En ligne', 'Magasin'
+}, { timestamps: true });
+
+const Commande = mongoose.model('Commande', commandeSchema);
+
+// Modèle Prescription
 const prescriptionSchema = new Schema({
   Client_ID: { type: mongoose.Schema.Types.ObjectId, ref: 'Client', required: true },
   Sphere_OD: { type: Number },
