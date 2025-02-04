@@ -10,7 +10,10 @@ import { Monture } from 'src/models/monture.model';
 export class ApiService {
   constructor(private http: HttpClient) {}
 
-
+  register(userData: { username: string; email: string; sub: string }): Observable<any> {
+    console.log('User data being sent:', userData);  // Affiche les données avant l'envoi
+    return this.http.post(`${config.apiUri}/api/register`, userData);
+  }
   // Ping method to check API connectivity
   ping$() {
     return this.http.get(`${config.apiUri}/api/external`);

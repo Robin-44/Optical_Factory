@@ -40,6 +40,9 @@ export class MontureDisplayComponent implements OnInit {
     });
   }
 
+  add_to_shop(montureId:string){
+    console.log("Add to shop : ",montureId)
+  }
   // Méthode pour charger les informations du produit
   loadMonture(): void {
     this.apiService.getMonturesById(this.montureId).subscribe(

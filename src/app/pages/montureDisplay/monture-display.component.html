@@ -28,20 +28,13 @@
             <p><strong>Livrer à :</strong> Sullivan - Montfermeil 93370</p>
             <p><strong>Stock :</strong> Il ne reste plus que 7 exemplaire(s) en stock.</p>
           </div>
-      
-          <!-- Bouton d'action -->
-          <button class="btn btn-primary">Commander</button>
         </div>
       </div>
-      
-            <button class="purchase">Acheter</button>
-            <button class="add-to-shop">Ajouter au panier</button>
-          <button class="add-to-favoris">Ajouter au favoris</button>
-     
+      <button (click)="add_to_shop(monture._id)" class="add-to-shop">Ajouter au panier*</button>     
     </div>
   </div>
   <div class="row">
-    <div class="col-40">
+    <div class="col-10">
       <h2 class="title-monture">{{ monture.Marque }} - {{ monture.Modele }}</h2>
       
       <table class="table table-bordered">
@@ -110,5 +103,22 @@
    
     </div>
     
+  </div>
+</div>
+<div>
+  <div class=" krys-constrain">
+   
+    <div class="krys-reinsurance-list">
+
+        <span>30 jours pour changer d’avis</span>
+
+        <span>Livraison en magasin gratuite</span>
+
+        <span>Livraison rapide*</span>
+
+        <span>Entretien à vie</span>
+
+        <span>Garantie casse 2 ans</span>
+    </div>
   </div>
 </div>

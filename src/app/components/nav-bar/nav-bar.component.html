@@ -16,26 +16,8 @@
 
     <!-- Menu items for authenticated users -->
     <ng-container *ngIf="auth.isAuthenticated$ | async">
-      <a class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" [class.expanded]="isExpanded">
-        <i class="fas fa-glasses"></i>
-        <span>Lunettes de vues</span>
-      </a>
-
-      <a class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" [class.expanded]="isExpanded">
-        <i class="fas fa-sun"></i>
-        <span>Lunettes de soleil</span>
-      </a>
-
-      <a class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" [class.expanded]="isExpanded">
-        <i class="fas fa-eye"></i>
-        <span>Lentilles</span>
-      </a>
-      
-      <a class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" [class.expanded]="isExpanded">
-        <i class="fas fa-deaf"></i>
-        <span>Audition</span>
-      </a>
-
+    
+    
       <a routerLink="/profile" class="nav-item" routerLinkActive="active" [class.expanded]="isExpanded">
         <i class="fas fa-user"></i>
         <span>Profil</span>
@@ -44,6 +26,12 @@
       <a routerLink="/external-api" class="nav-item" routerLinkActive="active" [class.expanded]="isExpanded">
         <i class="fas fa-globe"></i>
         <span>API Externe</span>
+      </a>
+
+
+      <a routerLink="/recommendation_system" class="nav-item" routerLinkActive="active" [class.expanded]="isExpanded">
+        <i class="fas fa-globe"></i>
+        <span>Système de Recommandation</span>
       </a>
 
       <a routerLink="/settings" class="nav-item" routerLinkActive="active" [class.expanded]="isExpanded">

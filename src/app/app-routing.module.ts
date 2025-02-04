@@ -35,10 +35,13 @@ export const routes: Routes = [
   },
   {
     path: '',
-    canActivate: [authGuardFn],
-    component: HomeComponent
+    component: LoginComponent
   },
   { path: 'monture/:id', 
+    canActivate: [authGuardFn],
+    component: MontureDisplayComponent 
+  } ,
+  { path: 'recommendation_system', 
     canActivate: [authGuardFn],
     component: MontureDisplayComponent 
   } ,
