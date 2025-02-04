@@ -53,14 +53,11 @@ export class LoginComponent {
               email: user.email,     // L'email est généralement accessible directement
               sub: user.sub          // L'identifiant unique de l'utilisateur (peut être utile)
             };
-            console.log("USER : ",userData)
-
-        
             // Envoyer les données de l'utilisateur à l'API
             this.apiService.register(userData).subscribe(
               response => {
                 console.log('User registered successfully:', response);
-                this.router.navigate(['/home']);
+                
               },
               error => {
                 console.error('Error registering user:', error);
@@ -68,6 +65,7 @@ export class LoginComponent {
             );
           }
         });
+        this.router.navigate(['/home']);
       } else {
         // Si l'utilisateur n'est pas authentifié, le rediriger vers la page de connexion
         this.router.navigate(['/login']);
