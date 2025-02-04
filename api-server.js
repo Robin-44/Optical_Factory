@@ -38,6 +38,7 @@ app.use(
   })
 );
 app.options('*', cors()); 
+app.use(express.json());  
 
 app.use(morgan('dev'));
 app.use(helmet());
@@ -59,12 +60,45 @@ async function connectToDatabase() {
 }
 connectToDatabase();
 
-// **Routes for Clients**
-app.post('/api/clients', checkJwt, async (req, res) => {
+app.post('/api/register', checkJwt, async (req, res) => {
   try {
-    const client = await db.collection('clients').insertOne(req.body);
-    res.status(201).json(client.ops[0]);
+    console.log(req.auth.payload); // Affiche les informations du JWT (authentification)
+    console.log(req.body);  // Affiche les données envoyées dans le corps de la requête
+
+    // Récupère les données envoyées par le client
+    const { username, email, sub } = req.body;
+    let address = "8 allée de la cours";  // Valeur par défaut pour l'adresse
+
+    // Vérifie si les champs 'username' et 'email' sont présents
+    if (!username || !email) {
+      return res.status(400).json({ message: 'Name and email are required.' });
+    }
+
+    // Vérification si un client avec cet email existe déjà dans la base de données
+    const existingClient = await db.collection('clients').findOne({ email });
+
+    if (existingClient) {
+      return res.status(400).json({ message: 'Client already exists with this email.' });
+    }
+
+    // Si aucun client n'existe avec cet email, créez un nouveau client
+    const client = {
+      username,
+      email,
+      phone: sub,  // Utilisation du 'sub' du JWT comme numéro de téléphone
+      address,     // L'adresse par défaut
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    // Insertion du nouveau client dans la base de données
+    const result = await db.collection('clients').insertOne(client);
+
+    // Retourne une réponse avec le client créé
+    res.status(201).json({result, message: "Utilisateur ajouté avec succès" });
+
   } catch (err) {
+    console.error('Error during registration:', err);  // Affiche l'erreur côté serveur
     res.status(400).json({ message: err.message });
   }
 });
@@ -134,7 +168,7 @@ app.get('/api/montures', async (req, res) => {
   }
 });
 
-app.get('/api/montures/:id', checkJwt, async (req, res) => {
+app.get('/api/monture/:id', checkJwt, async (req, res) => {
   try {
     const monture = await db.collection('montures').findOne({ _id: new ObjectId(req.params.id) });
     if (!monture) return res.status(404).json({ message: 'Monture not found' });

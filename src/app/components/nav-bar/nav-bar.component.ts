@@ -22,7 +22,6 @@ export class NavBarComponent {
   checkLogin(){
       this.auth.isAuthenticated$.subscribe(isAuthenticated => {
        if (isAuthenticated) {
-         console.log("AUTH")
          this.router.navigate(['/home']);
        }
      });
@@ -38,12 +37,6 @@ export class NavBarComponent {
   }
 
   ngOnInit() {
-    // Vérifiez si l'utilisateur est déjà authentifié et redirigez-le
-    this.auth.isAuthenticated$.subscribe(isAuthenticated => {
-      if (isAuthenticated) {
-        // Si l'utilisateur est authentifié, redirigez-le vers la page d'accueil
-        this.router.navigate(['/home']); // Remplacez "/home" par le chemin de votre page d'accueil
-      }
-    });
+
   }
 }

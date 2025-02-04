@@ -1,72 +1,102 @@
 <app-nav-bar></app-nav-bar>
-<div class="" style="margin-left:20px ;">
-  <div class="banner-solde p-4 text-center bg-danger text-white rounded">
-    <h2>🔥 Soldes Exceptionnelles 🔥</h2>
-    <p>Profitez de réductions incroyables sur nos lunettes !</p>
+<div class="" style="margin-left:20px;">
+<div class="glasse-view-banner">
+</div>
+  <!-- Filtres -->
+  <div class="filter-section p-4">
+  
+    <select id="categoryFilter" class="filter" [(ngModel)]="selectedCategory" (change)="filterMontures()">
+      <option value="">Toutes les catégories</option>
+      <option value="tendances">Tendances du moment</option>
+      <option value="selection_opticians">Sélection Opticien</option>
+      <option value="best_sales">Meilleurs Ventes</option>
+      <option value="innovations">Innovations</option>
+    </select>
+      <select id="priceFilter" class="filter" [(ngModel)]="selectedPriceRange" (change)="filterMontures()">
+        <option value="">Tous les prix</option>
+        <option value="low">Moins de 50€</option>
+        <option value="mid">50€ à 150€</option>
+        <option value="high">Plus de 150€</option>
+      </select>
+      <select id="brandFilter" class="filter" [(ngModel)]="selectedBrand" (change)="filterMontures()">
+        <option value="">Toutes les marques</option>
+        <option *ngFor="let brand of brands" [value]="brand">{{brand}}</option>
+      </select>
   </div>
-<img src="../../../assets/home/footer/banner-home.png" class="banner-home" />
+
+
  
 
-
-  <div class="banner-brand mt-4">
+  <!-- Affichage de la catégorie sélectionnée -->
+  <div *ngIf="selectedCategory === 'tendances'" class="banner-brand mt-4">
     <h2 class="text-center">✨ Tendances du moment ✨</h2>
     <div class="d-flex flex-wrap justify-content-center gap-3 mt-3">
-      <div *ngFor="let tendance of tendances" class="card shadow-sm p-3">
-        <img [src]="tendance.img" class="card-img-top rounded" alt="{{tendance.nom}}">
+      <div *ngFor="let tendance of tendances" class="card" >
+        <div class="title-card">
+          <h2>{{tendance.nom}}</h2>
+        </div>
+        <img [src]="tendance.img" (click)="goToMonturePage(tendance._id)" class="card-img-top rounded" alt="{{tendance.nom}}">
         <div class="card-body text-center">
-          <h5 class="card-title">{{tendance.nom}}</h5>
-          <p class="card-text">{{tendance.description}}</p>
-          <p class="price">{{tendance.prix}}</p>
-          <button class="btn-dark p-1">Je découvre</button>
+          <h5 class="card-title">{{tendance.Marque}} - {{tendance.Modele}}</h5>
+          <p class="card-text">{{tendance.Forme}} - {{tendance.Type}} </p>
+          <p class="price">{{tendance.Prix}}</p>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- Autres catégories comme sélection opticien, etc., sont similaires -->
+
+  <!-- Affichage des montures filtrées -->
   <div class="banner-brand mt-4">
-    <h2 class="text-center">Sélection Opticien</h2>
+    <h2 class="text-center">Montures filtrées</h2>
     <div class="d-flex flex-wrap justify-content-center gap-3 mt-3">
-      <div *ngFor="let selection_optician of selection_opticians" class="card shadow-sm p-3">
-        <img [src]="selection_optician.img" class="card-img-top rounded" alt="{{selection_optician.nom}}">
-        <div class="card-body text-center">
-          <h5 class="card-title">{{selection_optician.nom}}</h5>
-          <p class="card-text">{{selection_optician.description}}</p>
-          <p class="price">{{selection_optician.prix}}</p>
-          <button class="btn-dark p-1">Je découvre</button>
+      <div *ngFor="let monture of filteredMontures" class="card">
+        <div class="title-card">
+          <h2>{{monture.Marque}}</h2>
+        </div>
+        <img [src]="monture.img" (click)="goToMonturePage(monture._id)" class="card-img-top" alt="{{monture.Marque}}">
+        <div class="card-body text-left">
+          <h5 class="card-title">{{monture.Marque}} - {{monture.Modele}}</h5>
+          <p class="card-text">{{monture.Forme}} - {{monture.Type}}</p>
+          <p class="price">{{monture.Prix}}</p>
         </div>
       </div>
     </div>
   </div>
 
-
-
+  <!-- Affichage de toutes les montures en bas de page -->
   <div class="banner-brand mt-4">
-    <h2 class="text-center">Meilleurs Ventes</h2>
+    <h2 class="text-center">Toutes nos Montures</h2>
     <div class="d-flex flex-wrap justify-content-center gap-3 mt-3">
-      <div *ngFor="let best_sale of best_sales" class="card shadow-sm p-3">
-        <img [src]="best_sale.img" class="card-img-top rounded" alt="{{best_sale.nom}}">
-        <div class="card-body text-center">
-          <h5 class="card-title">{{best_sale.nom}}</h5>
-          <p class="card-text">{{best_sale.description}}</p>
-          <p class="price">{{best_sale.prix}}</p>
-          <button class="btn-dark p-1">Je découvre</button>
+      <div *ngFor="let monture of montures" class="card" >
+        <img [src]="monture.img"  (click)="goToMonturePage(monture._id)" class="card-img-top rounded" alt="{{monture.nom}}">
+        <div class="card-body text-left">
+          <h5 class="card-title">{{monture.Marque}} - {{monture.Modele}} - {{monture.Materiau}}</h5>
+          <p class="card-text">{{monture.Forme}} {{monture.Type}}</p>
+          <p class="price">{{monture.Prix}}</p>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="banner-brand mt-4">
-    <h2 class="text-center">Inovations</h2>
-    <div class="d-flex flex-wrap justify-content-center gap-3 mt-3">
-      <div *ngFor="let innovation of innovations" class="card-IA shadow-sm p-3">
-        <img [src]="innovation.img" class="card-img-top rounded" alt="{{innovation.nom}}">
-        <div class="card-body text-center">
-          <h5 class="card-title">{{innovation.nom}}</h5>
-          <p class="card-text">{{innovation.description}}</p>
-          <p class="price">{{innovation.prix}}</p>
-          <button class="btn-dark p-1">Je découvre</button>
-        </div>
-      </div>
+</div>
+
+
+<div>
+  <div class=" krys-constrain">
+   
+    <div class="krys-reinsurance-list">
+
+        <span>30 jours pour changer d’avis</span>
+
+        <span>Livraison en magasin gratuite</span>
+
+        <span>Livraison rapide*</span>
+
+        <span>Entretien à vie</span>
+
+        <span>Garantie casse 2 ans</span>
     </div>
   </div>
 </div>

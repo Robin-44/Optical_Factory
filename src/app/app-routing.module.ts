@@ -1,13 +1,13 @@
 import {
   Routes,
 } from '@angular/router';
+import { authGuardFn } from '@auth0/auth0-angular';
+import { LoginComponent } from './components/login/login.component';
+import { ErrorComponent } from './pages/error/error.component';
+import { ExternalApiComponent } from './pages/external-api/external-api.component';
 import { HomeComponent } from './pages/home/home.component';
 import { ProfileComponent } from './pages/profile/profile.component';
-import { ExternalApiComponent } from './pages/external-api/external-api.component';
-import { ErrorComponent } from './pages/error/error.component';
-import { authGuardFn } from '@auth0/auth0-angular';
-import { AuthComponent } from './pages/auth/auth.component';
-import { LoginComponent } from './components/login/login.component';
+import { MontureDisplayComponent } from './pages/montureDisplay/monture-display.component';
 
 export const routes: Routes = [
   {
@@ -33,10 +33,17 @@ export const routes: Routes = [
     canActivate: [authGuardFn],
     component: HomeComponent
   },
-
   {
     path: '',
-    component: HomeComponent
+    component: LoginComponent
   },
+  { path: 'monture/:id', 
+    canActivate: [authGuardFn],
+    component: MontureDisplayComponent 
+  } ,
+  { path: 'recommendation_system', 
+    canActivate: [authGuardFn],
+    component: MontureDisplayComponent 
+  } ,
 
 ];

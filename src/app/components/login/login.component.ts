@@ -2,6 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { CommonModule, DOCUMENT } from '@angular/common';
 import { AuthService } from '@auth0/auth0-angular';
 import { Router, RouterModule } from '@angular/router';
+import { ApiService } from 'src/app/api.service';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +14,7 @@ import { Router, RouterModule } from '@angular/router';
 export class LoginComponent {
   isExpanded = false;
 
-  constructor(private router:Router,public auth: AuthService,
+  constructor(private router:Router,public auth: AuthService,private apiService:ApiService,
     @Inject(DOCUMENT) private doc: Document) {}
 
   toggleSidebar() {
@@ -41,12 +42,41 @@ export class LoginComponent {
   }
 
   ngOnInit() {
-    // Vérifiez si l'utilisateur est déjà authentifié et redirigez-le
+    // Vérifiez si l'utilisateur est authentifié
     this.auth.isAuthenticated$.subscribe(isAuthenticated => {
       if (isAuthenticated) {
-        // Si l'utilisateur est authentifié, redirigez-le vers la page d'accueil
-        this.router.navigate(['/home']); // Remplacez "/home" par le chemin de votre page d'accueil
+        // Récupérer les informations de l'utilisateur depuis l'Observable user$
+        this.auth.user$.subscribe(user => {
+          if (user) {
+            const userData = {
+              username: user.name,   // Auth0 stocke souvent le nom dans `name`
+              email: user.email,     // L'email est généralement accessible directement
+              sub: user.sub          // L'identifiant unique de l'utilisateur (peut être utile)
+            };
+            console.log("USER : ",userData)
+
+        
+            // Envoyer les données de l'utilisateur à l'API
+            this.apiService.register(userData).subscribe(
+              response => {
+                console.log('User registered successfully:', response);
+                this.router.navigate(['/home']);
+              },
+              error => {
+                console.error('Error registering user:', error);
+              }
+            );
+          }
+        });
+      } else {
+        // Si l'utilisateur n'est pas authentifié, le rediriger vers la page de connexion
+        this.router.navigate(['/login']);
       }
     });
+  
+    console.log(this.auth);  // Pour voir les données de l'objet auth dans la console
   }
-}
+  
+  
+  }
+  
