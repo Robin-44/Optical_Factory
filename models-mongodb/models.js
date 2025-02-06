@@ -9,6 +9,7 @@ const clientSchema = new Schema({
   Genre: { type: String },
   Ville: { type: String },
   Code_Postal: { type: String },
+  Sub: { type: String },
   Pays: { type: String },
   Adresse: { type: String },
   Email: { type: String, required: true, unique: true },
@@ -105,8 +106,29 @@ const prescriptionSchema = new Schema({
 
 const Prescription = mongoose.model('Prescription', prescriptionSchema);
 
+// Modèle Panier (Basket)
+const basketSchema = new Schema({
+  Client_ID: { 
+    type: mongoose.Schema.Types.ObjectId , 
+    ref: 'Client', 
+    required: true 
+  },
+  Monture_ID: {
+    type: mongoose.Schema.Types.String,
+    ref: 'Monture',
+    required: true
+  },
+  Quantity: {
+    type: mongoose.Schema.Types.Number,
+    required: true
+  },
+}, { timestamps: true });  // Enregistre les timestamps de création et de mise à jour automatiquement
+
+const Basket = mongoose.model('Basket', basketSchema);
+
 
 module.exports = {
+  Basket,
   Client,
   Commande,
   Monture,

@@ -1,0 +1,46 @@
+<app-nav-bar></app-nav-bar>
+<div *ngIf="loading" class="text-center my-4">
+    <p>Chargement du panier...</p>
+  </div>
+  
+  <div *ngIf="!loading && (basket == null || basket.length === 0)" class="empty-basket text-center">
+    <p class="alert alert-warning">Votre panier est vide.</p>
+    <a routerLink="/home" class="btn btn-primary">Retour à l'accueil</a>
+  </div>
+  
+  <div *ngIf="!loading && basket.length > 0" class="container">
+    <h2 class="text-center my-4">Votre Panier</h2>
+    <table class="table table-bordered table-striped text-center">
+      <thead class="thead-dark">
+        <tr>
+          <th>Image</th>
+          <th>Marque</th>
+          <th>Modèle</th>
+          <th>Quantité</th>
+          <th>Prix</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of basket">
+          <td><img [src]="item.monture.img" alt="Monture" width="50" class="img-thumbnail"></td>
+          <td>{{ item.monture.Marque }}</td>
+          <td>{{ item.monture.Modele }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>{{ item.monture.Prix | currency:'EUR' }}</td>
+          <td>
+            <button class="btn btn-danger btn-sm" (click)="removeItem(item.monture._id)">
+              <i class="fas fa-trash"></i> Supprimer
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <div class="text-center my-4">
+      <button class="btn btn-success btn-lg" (click)="checkout()">
+        <i class="fas fa-shopping-cart"></i> Passer à l'achat
+      </button>
+    </div>
+  </div>
+  

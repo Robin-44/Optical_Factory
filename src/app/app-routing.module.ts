@@ -20,6 +20,9 @@ import { ExternalApiComponent } from './pages/external-api/external-api.componen
 import { ErrorComponent } from './pages/error/error.component';
 import { LoginComponent } from './components/login/login.component';
 import { from } from 'rxjs';
+import { BasketComponent } from './pages/basket/basket.component';
+import { RecommendationSystemComponent } from './pages/recommendation-system/recommendation-system.component';
+import { QuestionnaireComponent } from './pages/questionnaire/questionnaire.component';
 
 export const routes: Routes = [
   // Sans Login
@@ -90,9 +93,14 @@ export const routes: Routes = [
     canActivate: [authGuardFn],
     component: MontureDisplayComponent 
   } ,
+  { path: 'questionnaire', canActivate: [authGuardFn], component: QuestionnaireComponent },
   { path: 'recommendation_system', 
     canActivate: [authGuardFn],
-    component: MontureDisplayComponent 
+    component: RecommendationSystemComponent 
+  } ,
+  { path: 'basket', 
+    canActivate: [authGuardFn],
+    component: BasketComponent 
   } ,
 
 ];

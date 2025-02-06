@@ -1,15 +1,22 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import config from '../../auth_config.json';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Monture } from 'src/models/monture.model';
+import { Basket } from 'src/models/basket.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
   constructor(private http: HttpClient) {}
+  getMontures(): Observable<Monture[]> {
+    return this.http.get<Monture[]>(`${config.apiUri}/api/montures`);
+  }
 
+  getVerres(): Observable<string[]> {
+    return this.http.get<string[]>(`${config.apiUri}/api/verres`);
+  }
   register(userData: { username: string; email: string; sub: string }): Observable<any> {
     console.log('User data being sent:', userData);  // Affiche les données avant l'envoi
     return this.http.post(`${config.apiUri}/api/register`, userData);
@@ -21,15 +28,43 @@ export class ApiService {
   getMonturesById(id: string): Observable<any> {
     return this.http.get<Monture>(`${config.apiUri}/api/monture/${id}`);
   }
+  reduceMontureQuantity(montureId: string): Observable<any> {
+    return this.http.post<any>(`${config.apiUri}/api/reduce_monture_quantity`, { montureId });
+  }
+  
+  checkout(): Observable<any> {
+    return this.http.post<any>(`${config.apiUri}/api/checkout`, {});
+  }
+  
+  getCountMontureToBasket(): Observable<any> {
+    return this.http.get<any>(`${config.apiUri}/api/panier/count/`);
+  }
+
+  getCountBasketByMonture(montureId:String): Observable<any> {
+    return this.http.get<any>(`${config.apiUri}/api/panier/count/`+montureId);
+  }
+  getRecommendationsFromBasket(): Observable<any> {
+    return this.http.get<any>(`${config.apiUri}/api/recommendations/panier`);
+  }
+
+  
+  getBasketUser(){
+    return this.http.get<any>(`${config.apiUri}/api/get_basket`);
+  }
 
   // **Clients Methods** (Si nécessaire pour récupérer des données liées aux clients)
   getClients$(): Observable<any[]> {
     return this.http.get<any[]>(`${config.apiUri}/api/clients`);
   }
 
+  postAddToOrder(basket: Basket): Observable<String> {
+    console.log(basket)
+    return this.http.post<String>(`${config.apiUri}/api/add_monture_to_basket`, basket);
+  }
+  
   // **Montures Methods** (Pour récupérer les données des montures)
-  getMontures$(): Observable<any[]> {
-    return this.http.get<any[]>(`${config.apiUri}/api/montures`);
+  getMontures$(): Observable<Monture[]> {
+    return this.http.get<Monture[]>(`${config.apiUri}/api/montures`);
   }
 
 

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { Client, Commande, Monture, Verre, Prescription } = require('../models-mongodb/models');
+const { Client, Commande, Monture, Verre, Prescription, Basket} = require('../models-mongodb/models');
 
 // Connexion à MongoDB
 const uri = "mongodb+srv://sullivansextius:T1vcZx08zLzE0pVr@cluster0.hlc6i.mongodb.net/optical-factory?retryWrites=true&w=majority&appName=Cluster0";
@@ -13,6 +13,7 @@ const uri = "mongodb+srv://sullivansextius:T1vcZx08zLzE0pVr@cluster0.hlc6i.mongo
     await Verre.deleteMany({});
     await Client.deleteMany({});
     await Commande.deleteMany({});
+    await Basket.deleteMany({});
     
   
     // Étape 1: Insérer les verres
@@ -657,8 +658,15 @@ const uri = "mongodb+srv://sullivansextius:T1vcZx08zLzE0pVr@cluster0.hlc6i.mongo
     await Prescription.insertMany(prescriptions);
     console.log('Prescriptions insérées avec succès');
 
-    console.log('Prescriptions insérées avec succès');
-  
+
+    const basket = await Basket.create({
+      Client_ID:clients[0]._id,
+      Monture_ID:montures[0]._id,
+      Quantity: 10
+    })
+
+    await Basket.create(basket);
+    console.log('Panier inséré avec succès');
     mongoose.connection.close();
   }
   

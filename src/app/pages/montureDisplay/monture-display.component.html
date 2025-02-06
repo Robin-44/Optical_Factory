@@ -4,7 +4,7 @@
     <h2>🔥 Soldes Exceptionnelles 🔥</h2>
     <p>Profitez de réductions incroyables sur nos lunettes !</p>
   </div>
-<img src="../../../assets/home/footer/banner-home.png" class="banner-home" />
+  <img src="../../../assets/home/footer/banner-home.png" class="banner-home" />
  
 
 <div *ngIf="monture" class=" monture-container">
@@ -30,7 +30,7 @@
           </div>
         </div>
       </div>
-      <button (click)="add_to_shop(monture._id)" class="add-to-shop">Ajouter au panier*</button>     
+      <button (click)="add_to_shop(monture._id)" class="add-to-shop">Ajouter au panier* ({{quantity}})</button>     
     </div>
   </div>
   <div class="row">

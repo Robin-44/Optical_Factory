@@ -1,0 +1,55 @@
+/* panier.component.css */
+.panier {
+    border: 1px solid #ccc;
+    padding: 20px;
+    width: 300px;
+    margin: 0 auto;
+  }
+
+  .container {
+    min-height: 100vh;
+  }
+  
+  button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #45a049;
+  }
+  
+  .container {
+    min-height: 100vh;
+  }
+  
+  .empty-basket {
+    text-align: center;
+    margin-top: 20px;
+    min-height: 100vh;
+  }
+  
+  .empty-basket p {
+    
+    font-size: 18px;
+    font-weight: bold;
+    color: #555;
+  }
+  
+  .empty-basket button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+  }
+  
+  .empty-basket button:hover {
+    background-color: #0056b3;
+  }
+  

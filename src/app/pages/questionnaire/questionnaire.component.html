@@ -1,0 +1,60 @@
+<app-nav-bar></app-nav-bar>
+<img src="../../../assets/home/footer/banner-home.png" class="banner-home" />
+
+<div class="questionnaire-container">
+  <h3>Questionnaire de Recommandation</h3>
+
+  <div class="question-section">
+    <h4>Section 1: Informations Générales</h4>
+    <div *ngFor="let question of questions; let i = index" class="question">
+      <p>{{ question.question }}</p>
+      <div *ngFor="let option of question.options" class="option">
+        <label>
+          <input
+            type="radio"
+            name="question{{ i }}"
+            [(ngModel)]="answers['question' + i]"
+            [value]="option"
+          />
+          {{ option }}
+        </label>
+      </div>
+    </div>
+    <!-- Bouton de réinitialisation -->
+    <button (click)="resetAnswers()" class="btn btn-warning">Réinitialiser</button>
+  </div>
+
+  <button (click)="submitAnswers()" class="btn-submit">Soumettre</button>
+</div>
+
+<div class="recommended-montures" *ngIf="recommendedMontures.length > 0">
+    <h4>Montures recommandées :</h4>
+    <table class="montures-table">
+      <thead>
+        <tr>
+          <th>Image</th>
+          <th>Marque</th>
+          <th>Modèle</th>
+          <th>Style</th>
+          <th>Forme</th>
+          <th>Type</th>
+          <th>Traitement</th>
+          <th>Teinte</th>
+          <th>Couleur</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let monture of recommendedMontures">
+          <td><img [src]="monture.img" alt="{{ monture.Marque }} {{ monture.Modele }}" class="monture-image" /></td>
+          <td>{{ monture.Marque }}</td>
+          <td>{{ monture.Modele }}</td>
+          <td>{{ monture.Style }}</td>
+          <td>{{ monture.Forme }}</td>
+          <td>{{ monture.Type }}</td>
+          <td>{{ monture.Traitements }}</td>
+          <td>{{ monture.Teinte }}</td>
+          <td>{{ monture.Couleur }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>

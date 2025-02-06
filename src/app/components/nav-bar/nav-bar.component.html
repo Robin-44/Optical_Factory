@@ -9,7 +9,7 @@
 
   <div class="sidebar-content">
     <nav>
-      <a routerLink="/" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" [class.expanded]="isExpanded">
+      <a routerLink="/home" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" [class.expanded]="isExpanded">
         <i class="fas fa-home"></i>
         <span>Accueil</span>
       </a>    
@@ -23,15 +23,14 @@
         <span>Profil</span>
       </a>
 
-      <a routerLink="/external-api" class="nav-item" routerLinkActive="active" [class.expanded]="isExpanded">
-        <i class="fas fa-globe"></i>
-        <span>API Externe</span>
+      <a routerLink="/recommendation_system" class="nav-item" routerLinkActive="active" [class.expanded]="isExpanded">
+        <i class="fas fa-question-circle"></i>
+        <span>Recommandation</span>
       </a>
 
-
-      <a routerLink="/recommendation_system" class="nav-item" routerLinkActive="active" [class.expanded]="isExpanded">
-        <i class="fas fa-globe"></i>
-        <span>Système de Recommandation</span>
+      <a routerLink="/basket" class="nav-item" routerLinkActive="active" [class.expanded]="isExpanded">
+        <i class="fas fa-shopping-cart"></i>
+        <span>Panier ({{this.quantity}})</span>
       </a>
 
       <a routerLink="/settings" class="nav-item" routerLinkActive="active" [class.expanded]="isExpanded">

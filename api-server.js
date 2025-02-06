@@ -62,8 +62,6 @@ connectToDatabase();
 
 app.post('/api/register', checkJwt, async (req, res) => {
   try {
-    console.log(req.auth.payload); // Affiche les informations du JWT (authentification)
-    console.log(req.body);  // Affiche les données envoyées dans le corps de la requête
 
     // Récupère les données envoyées par le client
     const { username, email, sub } = req.body;
@@ -75,7 +73,7 @@ app.post('/api/register', checkJwt, async (req, res) => {
     }
 
     // Vérification si un client avec cet email existe déjà dans la base de données
-    const existingClient = await db.collection('clients').findOne({ email });
+    const existingClient = await db.collection('clients').findOne({sub : sub });
 
     if (existingClient) {
       return res.status(400).json({ message: 'Client already exists with this email.' });
@@ -85,8 +83,9 @@ app.post('/api/register', checkJwt, async (req, res) => {
     const client = {
       username,
       email,
-      phone: sub,  // Utilisation du 'sub' du JWT comme numéro de téléphone
-      address,     // L'adresse par défaut
+      phone: "091",
+      sub:sub,  
+      address,   
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
@@ -106,12 +105,98 @@ app.post('/api/register', checkJwt, async (req, res) => {
 app.get('/api/clients', checkJwt, async (req, res) => {
   try {
     const clients = await db.collection('clients').find().toArray();
-    console.log(clients)
     res.status(200).json(clients);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
 });
+
+
+app.get('/api/recommendations/panier', checkJwt, async (req, res) => {
+  try {
+    const sub = req.auth.payload.sub;  // Récupérer l'ID du client depuis le JWT
+    const client = await db.collection('clients').findOne({ sub: sub });  // Chercher le client
+    if (!client) {
+      return res.status(404).json({ message: 'Client non trouvé' });
+    }
+
+    // Récupérer les produits du panier du client
+    const panier = await db.collection('baskets').find({ Client_ID: client._id }).toArray();
+
+    if (panier.length === 0) {
+      return res.status(404).json({ message: 'Aucun produit trouvé dans le panier' });
+    }
+
+    // Récupérer les détails des montures dans le panier
+    const monturesInPanier = await Promise.all(panier.map(async (item) => {
+      const monture = await db.collection('montures').findOne({ _id: new ObjectId(item.Monture_ID) });
+      return monture;
+    }));
+
+    // Extraire les caractéristiques des montures pour la recommandation
+    const montureCategories = monturesInPanier.map(monture => monture.Categorie_Protection);  // Exemple : Categorie_Protection
+    const montureStyles = monturesInPanier.map(monture => monture.Style);  // Exemple : Style
+
+    // Rechercher des montures similaires dans la base de données
+    const recommendedMontures = await db.collection('montures').find({
+      Categorie_Protection: { $in: montureCategories },
+      Style: { $in: montureStyles },
+      _id: { $nin: monturesInPanier.map(m => m._id) }  // Exclure les montures déjà dans le panier
+    }).toArray();
+
+    // Recommander des verres compatibles avec les montures
+    const recommendedVerres = await db.collection('verres').find({
+      // Logique pour recommander des verres, par exemple en fonction du type de monture
+    }).toArray();
+
+    res.status(200).json({
+      recommendedMontures: recommendedMontures,
+      recommendedVerres: recommendedVerres
+    });
+
+  } catch (err) {
+    console.error('Erreur lors des recommandations :', err);
+    res.status(500).json({ message: 'Erreur lors des recommandations basées sur le panier' });
+  }
+});
+
+
+
+app.get('/api/panier/count', checkJwt, async (req, res) => {
+  try {
+    const sub = req.auth.payload.sub;  // Récupérer l'ID du client depuis le JWT
+    const client = await db.collection('clients').findOne({ sub: sub });  // Chercher le client dans la base
+
+    if (!client) {
+      return res.status(404).json({ message: 'Client non trouvé' });
+    }
+
+    // Utilisation de l'agrégation pour calculer la somme des quantités dans le panier
+    const panier = await db.collection('baskets').aggregate([
+      { 
+        $match: { Client_ID: client._id }  // Trouver tous les paniers pour ce client
+      },
+      {
+        $group: {
+          _id: null,  // Pas besoin de regrouper par monture, juste additionner
+          totalQuantity: { $sum: "$Quantity" }  // Additionner les quantités des montures dans le panier
+        }
+      }
+    ]).toArray();
+
+    if (panier.length === 0) {
+      return res.status(404).json({ message: 'Aucune monture trouvée dans le panier.' });
+    }
+
+    // Retourner la quantité totale
+    res.status(200).json({ quantity: panier[0].totalQuantity });
+
+  } catch (err) {
+    console.error('Erreur lors du calcul du nombre d\'articles dans le panier:', err);
+    res.status(500).json({ message: 'Erreur lors du calcul du nombre d\'articles dans le panier' });
+  }
+});
+
 
 app.get('/api/clients/:id', checkJwt, async (req, res) => {
   try {
@@ -122,6 +207,175 @@ app.get('/api/clients/:id', checkJwt, async (req, res) => {
     res.status(400).json({ message: err.message });
   }
 });
+
+app.get('/api/panier/count/:montureId', checkJwt, async (req, res) => {
+  const { montureId } = req.params;  // Récupérer l'ID de la monture depuis l'URL
+  const sub = req.auth.payload.sub;  // ID de l'utilisateur à partir du JWT
+
+  if (!montureId) {
+    return res.status(400).json({ message: 'Monture ID est nécessaire' });
+  }
+
+  try {
+    // Vérifiez si le client existe
+    const client = await db.collection('clients').findOne({ sub: sub });
+    if (!client) {
+      return res.status(404).json({ message: 'Client non trouvé' });
+    }
+
+    // Récupérer le panier du client pour cette monture spécifique
+    const panier = await db.collection('baskets').findOne({ 
+      Client_ID: client._id, 
+      Monture_ID: montureId 
+    });
+
+    if (panier) {
+      return res.status(200).json({ 
+        quantity: panier.Quantity,  // Retourne la quantité de cette monture dans le panier
+        montureId: montureId
+      });
+    } else {
+      // Si la monture n'est pas dans le panier
+      return res.status(200).json({ quantity: 0 });
+    }
+  } catch (error) {
+    console.error('Erreur lors de la récupération du panier:', error);
+    return res.status(500).json({ message: 'Erreur interne du serveur' });
+  }
+});
+
+
+app.post('/api/checkout', checkJwt, async (req, res) => {
+  try {
+    const sub = req.auth.payload.sub;
+
+    const client = await db.collection('clients').findOne({ sub: sub });
+    if (!client) {
+      return res.status(404).json({ message: 'Client non trouvé' });
+    }
+
+    await db.collection('baskets').deleteMany({ Client_ID: client._id });
+
+    return res.status(200).json({ message: 'Achat effectué avec succès' });
+  } catch (error) {
+    return res.status(500).json({ message: 'Erreur interne du serveur' });
+  }
+});
+
+app.post('/api/reduce_monture_quantity', checkJwt, async (req, res) => {
+  try {
+    const { montureId } = req.body;
+    const sub = req.auth.payload.sub;
+
+    if (!montureId) {
+      return res.status(400).json({ message: 'Monture ID requis' });
+    }
+
+    const client = await db.collection('clients').findOne({ sub: sub });
+    if (!client) {
+      return res.status(404).json({ message: 'Client non trouvé' });
+    }
+
+    let basketItem = await db.collection('baskets').findOne({ Client_ID: client._id, Monture_ID: montureId });
+
+    if (!basketItem) {
+      return res.status(404).json({ message: 'Article non trouvé dans le panier' });
+    }
+
+    if (basketItem.Quantity > 1) {
+      await db.collection('baskets').updateOne(
+        { Client_ID: client._id, Monture_ID: montureId },
+        { $inc: { Quantity: -1 } }
+      );
+    } else {
+      await db.collection('baskets').deleteOne({ Client_ID: client._id, Monture_ID: montureId });
+    }
+
+    return res.status(200).json({ message: 'Quantité mise à jour' });
+  } catch (error) {
+    return res.status(500).json({ message: 'Erreur interne du serveur' });
+  }
+});
+
+app.get('/api/get_basket', checkJwt, async (req, res) => {
+  try {
+    const sub = req.auth.payload.sub;
+
+    // Vérifier si le client existe
+    const client = await db.collection('clients').findOne({ sub: sub });
+    if (!client) {
+      return res.status(404).json({ message: 'Client non trouvé' });
+    }
+
+    // Récupérer tous les articles du panier pour ce client
+    const baskets = await db.collection('baskets').find({ Client_ID: client._id }).toArray();
+
+    // Vérifier si le panier est vide
+    if (!baskets.length) {
+      return res.status(200).json({ message: 'Panier vide', baskets: [] });
+    }
+
+    // Récupérer les détails des montures associées aux IDs stockés dans le panier
+    const montureIds = baskets.map((basket) => new ObjectId(basket.Monture_ID));
+    const montures = await db.collection('montures').find({ _id: { $in: montureIds } }).toArray();
+
+    // Associer les montures aux articles du panier
+    const panierComplet = baskets.map((basket) => {
+      const monture = montures.find((m) => m._id.toString() === basket.Monture_ID.toString());
+      return {
+        monture: monture || null,
+        quantity: basket.Quantity,
+      };
+    });
+
+    return res.status(200).json({ panier: panierComplet });
+  } catch (error) {
+    console.error('Erreur lors de la récupération du panier:', error);
+    return res.status(500).json({ message: 'Erreur interne du serveur' });
+  }
+});
+
+app.post('/api/add_monture_to_basket', checkJwt, async (req, res) => {
+  const { montureId, quantity } = req.body;
+  console.log(quantity)
+  const sub = req.auth.payload.sub
+  if (!montureId || quantity == null) {
+    return res.status(400).json({ message: 'Monture ID  sont nécessaires' });
+  }
+  try {
+
+    // Vérifiez si le client existe
+    const client = await db.collection('clients').findOne({sub: sub});
+    
+    if (!client) {
+      return res.status(404).json({ message: 'Client non trouvé' });
+    }
+
+    // Vérifiez si un panier pour ce client existe
+    let baskets = await db.collection('baskets').findOne({ Client_ID: client._id, Monture_ID: montureId });
+
+    if (!baskets) {
+      // Si le panier pour cette monture n'existe pas, créez-le
+      baskets = {
+        Client_ID: new ObjectId(client._id),
+        Monture_ID: montureId,
+        Quantity: quantity
+      };
+      const result = await db.collection('baskets').insertOne(baskets);
+      return res.status(201).json({ message: 'Monture ajoutée au panier', baskets });
+    } else {
+      // Mettre à jour la quantité dans la base de données
+      await db.collection('baskets').updateOne(
+        { Client_ID: client._id, Monture_ID: montureId },
+        { $set: { Quantity: quantity } } // Mise à jour de la quantité
+      );  
+    }
+  } catch (error) {
+    return res.status(500).json({ message: 'Erreur interne du serveur' });
+  }
+});
+
+
 
 app.put('/api/clients/:id', checkJwt, async (req, res) => {
   try {
@@ -163,6 +417,16 @@ app.get('/api/montures', async (req, res) => {
     const montures = await db.collection('montures').find().toArray();
     console.log(montures)
     res.status(200).json(montures);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+
+app.get('/api/verres', async (req, res) => {
+  try {
+    const verres = await db.collection('verres').find().toArray();
+    console.log(verres)
+    res.status(200).json(verres);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }

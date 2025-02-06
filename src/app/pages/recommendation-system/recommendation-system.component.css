@@ -1,0 +1,54 @@
+/* Style global pour la page */
+.container {
+    padding: 20px;
+  }
+  
+  /* Section contenant les recommandations */
+  .recommended-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .recommended-item {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+    width: 150px;  /* Ajuste en fonction de la taille souhaitée pour chaque item */
+  }
+  
+  .recommended-item img {
+    width: 100%;
+    max-width: 80px;
+    height: auto;
+  }
+  
+  .no-recommendation {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;  /* Prend toute la hauteur de la page */
+    text-align: center;
+  }
+  
+  .no-recommendation p {
+    margin-bottom: 20px;
+  }
+
+
+  
+  .btn-back {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  
+  .btn-back:hover {
+    background-color: #0056b3;
+  }
+  

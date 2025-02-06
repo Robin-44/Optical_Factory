@@ -1,1 +1,33 @@
-<p>recommendation-system works!</p>
+<app-nav-bar></app-nav-bar>
+
+<div class="container">
+    <div class="container" *ngIf="loading">Chargement des recommandations...</div>
+    <div  *ngIf="!loading && recommendedMontures.length > 0">
+    <h3>Montures Recommandées en fonction de votre panier</h3>
+    <div class="recommended-items">
+        <div *ngFor="let monture of recommendedMontures" class="recommended-item">
+        <img [src]="monture.img" alt="Monture Recommandée" width="80">
+        <p>{{ monture.Marque }} - {{ monture.Modele }}</p>
+        <p>{{ monture.Prix | currency:'EUR' }}</p>
+        </div>
+    </div>
+    </div>
+
+    <div *ngIf="!loading && recommendedVerres.length > 0">
+    <h3>Verres Recommandés en fonction de votre panier</h3>
+    <div class="recommended-items">
+        <div *ngFor="let verre of recommendedVerres" class="recommended-item">
+        <p>{{ verre.Type }} - {{ verre.Prix | currency:'EUR' }}</p>
+        </div>
+    </div>
+    </div>
+    <div *ngIf="recommendedMontures.length > 0 || recommendedVerres.length > 0">
+        <button type="button" (click)="navigate_to_questionnaire()" class="mt-5 btn btn-primary">Répondez à notre questionnaire pour plus de recommandations</button>
+    </div>
+
+    <!-- Message si aucune recommandation -->
+    <div *ngIf="!loading && recommendedMontures.length === 0 && recommendedVerres.length === 0" class="no-recommendation">
+    <p>Aucune recommandation disponible pour votre panier actuel.</p>
+    <button routerLink="/home" class="btn-back">Retour à l'accueil</button>
+    </div>
+</div>

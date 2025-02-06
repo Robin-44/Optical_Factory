@@ -4,6 +4,7 @@ export interface Client {
   email: string;
   phone: string;
   address: string;
+  sub:string;
   createdAt?: string; // Optional, could be added by the backend
   updatedAt?: string; // Optional, could be added by the backend
 }
