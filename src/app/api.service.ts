@@ -10,6 +10,28 @@ import { Basket } from 'src/models/basket.model';
 })
 export class ApiService {
   constructor(private http: HttpClient) {}
+
+   // Obtenir toutes les tables disponibles dans la base de données
+   getTables(): Observable<any> {
+    return this.http.get<any>(`${config.apiUri}/api/tables`);
+  }
+
+  // Obtenir les données d'une table spécifique
+  getTableData(tableName: string): Observable<any> {
+    return this.http.get<any>(`${config.apiUri}/api/tables/${tableName}`);
+  }
+
+  // Supprimer une ligne d'une table
+  deleteTableRow(tableName: string, id: string): Observable<any> {
+    return this.http.delete(`${config.apiUri}/api/tables/${tableName}/${id}`);
+  }
+
+  // Ajouter une nouvelle ligne dans une table
+  addTableRow(tableName: string, data: any): Observable<any> {
+    return this.http.post(`${config.apiUri}/api/tables/${tableName}`, data);
+  }
+
+
   getMontures(): Observable<Monture[]> {
     return this.http.get<Monture[]>(`${config.apiUri}/api/montures`);
   }

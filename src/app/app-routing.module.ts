@@ -5,24 +5,24 @@ import { authGuardFn } from '@auth0/auth0-angular';
 import { MontureDisplayComponent } from './pages/montureDisplay/monture-display.component';
 
 // Sans Login
-import { HelpComponent } from './pages/faq/faq.component';
-import { ContactComponent } from './pages/contact/contact.component';
-import { MentionsLegales } from './pages/mentions-legales/mentions-legales.component';
+import { CguComponent } from './pages/cgu/cgu.component';
 import { CGV } from './pages/cgv/cgv.component';
-import { CGU } from './pages/cgu/cgu.component';
-import { PolitiqueDeConfidentialite } from './pages/politique-de-confidentialite/politique-de-confidentialite.component';
+import { ContactComponent } from './pages/contact/contact.component';
 import { Cookies } from './pages/cookies/cookies.component';
+import { HelpComponent } from './pages/faq/faq.component';
+import { MentionsLegales } from './pages/mentions-legales/mentions-legales.component';
+import { PolitiqueDeConfidentialite } from './pages/politique-de-confidentialite/politique-de-confidentialite.component';
 import { RetourRemboursement } from './pages/retour-remboursement/retour-remboursement.component';
 
+import { LoginComponent } from './components/login/login.component';
+import { AdminPanelComponent } from './admin-panel/admin-panel.component';
+import { BasketComponent } from './pages/basket/basket.component';
+import { ErrorComponent } from './pages/error/error.component';
+import { ExternalApiComponent } from './pages/external-api/external-api.component';
 import { HomeComponent } from './pages/home/home.component';
 import { ProfileComponent } from './pages/profile/profile.component';
-import { ExternalApiComponent } from './pages/external-api/external-api.component';
-import { ErrorComponent } from './pages/error/error.component';
-import { LoginComponent } from './components/login/login.component';
-import { from } from 'rxjs';
-import { BasketComponent } from './pages/basket/basket.component';
-import { RecommendationSystemComponent } from './pages/recommendation-system/recommendation-system.component';
 import { QuestionnaireComponent } from './pages/questionnaire/questionnaire.component';
+import { RecommendationSystemComponent } from './pages/recommendation-system/recommendation-system.component';
 
 export const routes: Routes = [
   // Sans Login
@@ -36,7 +36,7 @@ export const routes: Routes = [
   },
   {
     path: 'cgu',
-    component: CGU
+    component: CguComponent
   },
   {
     path: 'politique-de-confidentialite',
@@ -102,5 +102,9 @@ export const routes: Routes = [
     canActivate: [authGuardFn],
     component: BasketComponent 
   } ,
+  { path: 'admin-panel', 
+    canActivate: [authGuardFn],
+    component: AdminPanelComponent 
+  },
 
 ];

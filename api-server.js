@@ -2,7 +2,6 @@ const express = require('express');
 const morgan = require('morgan');
 const helmet = require('helmet');
 const cors = require('cors');
-const path = require('path');
 const { auth } = require('express-oauth2-jwt-bearer');
 const authConfig = require('./auth_config.json');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
@@ -83,11 +82,18 @@ app.post('/api/register', checkJwt, async (req, res) => {
     const client = {
       username,
       email,
-      phone: "091",
+      prenom:username,
+      nom: username,
+      phone: "500-400-209",
       sub:sub,  
+      genre:"Homme",
+      Ville:"Paris",
+      Mode_Paiement_Favori:"VISA",
+      Preferences_Communication:"Téléphone",
       address,   
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
+      
     };
 
     // Insertion du nouveau client dans la base de données
@@ -411,6 +417,31 @@ app.post('/api/montures', async (req, res) => {
     res.status(400).json({ message: err.message });
   }
 });
+app.get('/api/tables', async (req, res) => {
+  const collections = await db.listCollections().toArray();
+  res.json({ tables: collections.map(col => col.name) });
+});
+app.delete('/api/tables/:tableName/:id', async (req, res) => {
+  const tableName = req.params.tableName;
+  const id = req.params.id;
+  await db.collection(tableName).deleteOne({ _id: new ObjectId(id) });
+  res.json({ message: 'Donnée supprimée' });
+});
+app.post('/api/tables/:tableName', async (req, res) => {
+  const tableName = req.params.tableName;
+  const newData = req.body;
+  await db.collection(tableName).insertOne(newData);
+  res.json({ message: 'Donnée ajoutée' });
+});
+
+
+app.get('/api/tables/:tableName', async (req, res) => {
+  const tableName = req.params.tableName;
+  const data = await db.collection(tableName).find().toArray();
+  res.json({ data });
+});
+
+
 
 app.get('/api/montures', async (req, res) => {
   try {

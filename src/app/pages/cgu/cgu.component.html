@@ -1,34 +1,23 @@
-<div style="padding: 20px;">
-    <h1>Conditions générales d'utilisation (CGU)</h1>    <strong> Article 1 - Objet</strong> <br>
-    Les présentes Conditions Générales d'Utilisation (CGU) ont pour objet de définir les modalités et conditions d'utilisation du site e-commerce [Nom du site] par les utilisateurs et clients.
-    <br><br>
-    <strong> Article 2 - Acceptation des CGU</strong> <br>
-    L'utilisation du site implique l'acceptation pleine et entière des présentes CGU. En accédant au site, l'utilisateur reconnaît avoir pris connaissance des conditions et s'engage à les respecter.
-    <br><br>
-    <strong> Article 3 - Accès au site</strong> <br>
-    Le site est accessible à tout utilisateur disposant d'une connexion internet. Certaines parties du site peuvent nécessiter la création d'un compte utilisateur.
-    <br><br>
-    <strong> Article 4 - Produits et Services</strong> <br>
-    Le site propose à la vente divers produits et services, dont les caractéristiques et les prix sont précisés sur les fiches descriptives. Les offres sont valables dans la limite des stocks disponibles.
-    <br><br>
-    <strong> Article 5 - Commandes</strong> <br>
-    Toute commande effectuée sur le site implique l'acceptation des Conditions Générales de Vente (CGV). L'utilisateur s'engage à fournir des informations exactes lors de la passation de commande.
-    <br><br>
-    <strong> Article 6 - Responsabilité</strong> <br>
-    Le site s'efforce d'assurer la fiabilité des informations publiées, mais ne saurait être tenu responsable des erreurs ou omissions. L'utilisateur est responsable de l'utilisation qu'il fait du site et des conséquences qui en découlent.
-    <br><br>
-    <strong> Article 7 - Protection des données personnelles</strong> <br>
-    Les informations recueillies lors de l'utilisation du site sont traitées conformément à notre politique de confidentialité. L'utilisateur dispose d'un droit d'accès, de rectification et de suppression des données le concernant.
-    <br><br>
-    <strong> Article 8 - Propriété intellectuelle</strong> <br>
-    Tous les contenus présents sur le site (textes, images, logos, etc.) sont protégés par les lois en vigueur sur la propriété intellectuelle. Toute reproduction ou utilisation non autorisée est interdite.
-    <br><br>
-    <strong> Article 9 - Modification des CGU</strong> <br>
-    Le site se réserve le droit de modifier les présentes CGU à tout moment. Les utilisateurs seront informés de toute modification via une publication sur le site.
-    <br><br>
-    <strong> Article 10 - Droit applicable et juridiction compétente</strong> <br>
-    Les présentes CGU sont soumises au droit français. En cas de litige, les tribunaux compétents seront ceux du ressort du siège social de l'entreprise exploitant le site.
-    <br><br>
-    <strong> Article 11 - Contact</strong> <br>
-    Pour toute question relative aux présentes CGU, vous pouvez nous contacter à l'adresse suivante : [Adresse e-mail de contact].
+<app-nav-bar></app-nav-bar>
+
+<div class="glasse-view-banner">
 </div>
+<div class="container cgu-container">
+    <h1 class="text-center mb-4">📜 Conditions Générales d'Utilisation (CGU)</h1>
+  
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <div *ngFor="let section of cguSections" class="mb-4">
+          <h3 class="text-primary">
+            <i class="bi bi-chevron-right"></i> {{ section.title }}
+          </h3>
+          <p>{{ section.content }}</p>
+        </div>
+      </div>
+    </div>
+  
+    <div class="text-center mt-4">
+      <button class="btn btn-primary" (click)="navigate_to_home()">🏠 Retour à l'accueil</button>
+    </div>
+  </div>
+  

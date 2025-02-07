@@ -9,6 +9,7 @@ import { NavBarComponent } from 'src/app/components/nav-bar/nav-bar.component';
 import { LoadingComponent } from 'src/app/components/loading/loading.component';
 import { AsyncPipe, CommonModule, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { CookieBannerComponent } from 'src/app/cookie-banner/cookie-banner.component';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -22,10 +23,12 @@ import { FormsModule } from '@angular/forms';
         AsyncPipe,
         NgIf,
         CommonModule,
-        FormsModule
+        FormsModule,
+        CookieBannerComponent
       ]
 })
 export class HomeComponent implements OnInit {
+  showBanner:Boolean = false;
   montures: Monture[] = []; 
   filteredMontures: Monture[] = [];  // Montures filtrées en fonction des critères
   tendances: Monture[] = []; 
@@ -68,7 +71,11 @@ export class HomeComponent implements OnInit {
       }
     );
   }
- 
+  resetCookies(): void {
+    localStorage.removeItem('cookiesAccepted');
+    this.showBanner = true;
+  }
+  
   filterMontures() {
     let filtered = this.montures;
 

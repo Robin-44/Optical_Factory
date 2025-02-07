@@ -3,10 +3,11 @@ import { CommonModule, DOCUMENT } from '@angular/common';
 import { AuthService } from '@auth0/auth0-angular';
 import { Router, RouterModule } from '@angular/router';
 import { ApiService } from 'src/app/api.service';
+import { AdminPanelComponent } from 'src/app/admin-panel/admin-panel.component';
 
 @Component({
   selector: 'app-nav-bar',
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule,AdminPanelComponent,NavBarComponent],
   standalone: true,
   templateUrl: './nav-bar.component.html',
   styleUrls: ['./nav-bar.component.css']

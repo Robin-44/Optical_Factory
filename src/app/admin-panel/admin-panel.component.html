@@ -1,0 +1,63 @@
+<app-nav-bar></app-nav-bar>
+
+<div class="container mt-4">
+  <h2 class="text-center mb-4">🎛 Panneau Admin</h2>
+
+  <!-- Sélection des tables -->
+  <div class="text-center mb-4">
+    <h4>📋 Tables disponibles :</h4>
+    <div class="btn-group">
+      <button 
+        *ngFor="let table of tables" 
+        class="btn btn-outline-primary"
+        (click)="loadTableData(table)">
+        {{ table }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Affichage des données de la table sélectionnée -->
+  <div *ngIf="selectedTable">
+    <h3 class="text-primary text-center">📌 Table: {{ selectedTable }}</h3>
+
+    <div class="table-responsive mt-3">
+      <table class="table table-striped table-bordered">
+        <thead class="table-dark">
+          <tr>
+            <th *ngFor="let key of tableData[0] | keyvalue">{{ key.key }}</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of tableData">
+            <td *ngFor="let key of row | keyvalue">{{ key.value }}</td>
+            <td>
+              <button class="btn btn-danger btn-sm" (click)="deleteRow(row._id)">🗑 Supprimer</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Bouton Ajouter une ligne -->
+    <div class="text-center mt-4">
+      <button class="btn btn-success" (click)="showAddForm()">➕ Ajouter une ligne</button>
+    </div>
+
+    <!-- Formulaire d'ajout -->
+    <div *ngIf="showForm" class="card mt-3 p-3">
+      <h3 class="text-center">📝 Ajouter une nouvelle ligne</h3>
+      <div class="mb-3" *ngFor="let key of tableData[0] | keyvalue">
+        <label class="form-label">{{ key.key }}</label>
+        <input [(ngModel)]="newRow[key.key]" class="form-control">
+      </div>
+      <button class="btn btn-primary mt-2" (click)="addRow()">✅ Enregistrer</button>
+    </div>
+  </div>
+
+  <!-- Affichage du graphique -->
+  <div *ngIf="tableData.length > 0" class="mt-5">
+    <h3 class="text-center">📊 Visualisation des Données</h3>
+    <canvas id="chartCanvas"></canvas>
+  </div>
+</div>
