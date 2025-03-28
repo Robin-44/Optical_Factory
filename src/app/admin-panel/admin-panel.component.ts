@@ -20,31 +20,301 @@ export class AdminPanelComponent implements OnInit {
   tableData: any[] = [];
   newRow: any = {};
   showForm = false;
+  public count_montures:any = 0; 
+  public count_baskets:any = 0; 
+  public count_clients:any = 0; 
+  public count_prescriptions:any = 0; 
+  public count_glasses:any = 0; 
+  public count_orders:any = 0; 
+  public chart:any;
 
-  constructor(private apiService: ApiService) {}
-  generateChart(): void {
-    const ctx = document.getElementById('chartCanvas') as HTMLCanvasElement;
-    new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: this.tableData.map(item => item._id),
-        datasets: [{
-          label: 'Quantité',
-          data: this.tableData.map(item => item.Quantity),
-          backgroundColor: 'rgba(75, 192, 192, 0.2)',
-          borderColor: 'rgba(75, 192, 192, 1)',
-          borderWidth: 1
-        }]
+  public chart_3:any;
+  public chart_4:any;
+  public clientChart:any;
+  public orderStatusChart:any;
+  public montureChart:any;
+  public verreChart:any;
+  public commandChart:any;
+  public progressData = {
+    task1: 50,
+    task2: 75,
+    task3: 30,
+    task4: 60
+  };
+  userTotals: any[] = [];
+  userChart: any;
+  // Données des lunettes les plus vendues
+  public topLunettes = [
+    { model: 'Ray-Ban Aviator', sales: 1200 },
+    { model: 'Oakley Holbrook', sales: 950 },
+    { model: 'Prada Linea Rossa', sales: 800 },
+    { model: 'Gucci GG0061S', sales: 650 },
+    { model: 'Maui Jim Peahi', sales: 600 }
+  ];
+
+  loadUserTotals(): void {
+    this.apiService.getUserTotals().subscribe(
+      (response) => {
+        // Afficher la réponse dans la console (pour le débogage)
+        console.log(response);
+        this.userTotals = response;
+        
+        // Extraire les noms des clients et leurs montants totaux
+        const clientNames = this.userTotals.map((user: any) => user.clientName);
+        const totalAmounts = this.userTotals.map((user: any) => user.total);
+
+        // Créer un graphique à barres avec Chart.js
+        this.userChart = new Chart('userChart', {
+          type: 'bar', // Type de graphique (barres)
+          data: {
+            labels: clientNames, // Noms des clients
+            datasets: [{
+              label: 'Montant Total des Commandes', // Légende du graphique
+              data: totalAmounts, // Montants totaux des commandes
+              backgroundColor: 'rgba(75, 192, 192, 0.2)', // Couleur des barres
+              borderColor: 'rgba(75, 192, 192, 1)', // Bord des barres
+              borderWidth: 1 // Largeur des bordures
+            }]
+          },
+          options: {
+            responsive: true, // Adapter la taille du graphique à l'écran
+            scales: {
+              y: {
+                beginAtZero: true // Commencer l'axe Y à zéro
+              }
+            }
+          }
+        });
       },
-      options: {
-        responsive: true
+      (error) => {
+        console.error('Erreur lors de la récupération des montants des commandes par utilisateur:', error);
       }
-    });
+    );
+  }
+
+  loadMontantsByMonth(): void {
+    this.apiService.getMontantsByMonth().subscribe(
+      (response) => {
+        // Réponse de l'API : récupérer les mois et les montants
+        console.log(response);
+
+        const months = response.map((item: any) => `${item.month}/${item.year}`);
+        const totals = response.map((item: any) => item.total);
+
+        // Créer le graphique avec Chart.js
+        this.commandChart = new Chart('commandChart', {
+          type: 'bar', // Type de graphique (barres)
+          data: {
+            labels: months, // Mois et année
+            datasets: [{
+              label: 'Montant Total des Commandes par Mois', // Légende du graphique
+              data: totals, // Montant total des commandes pour chaque mois
+              backgroundColor: 'rgba(75, 192, 192, 0.2)', // Couleur des barres
+              borderColor: 'rgba(75, 192, 192, 1)', // Bord des barres
+              borderWidth: 1 // Largeur des bordures
+            }]
+          },
+          options: {
+            responsive: true, // Adapter la taille du graphique à l'écran
+            scales: {
+              y: {
+                beginAtZero: true // Commencer l'axe Y à zéro
+              }
+            }
+          }
+        });
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des montants par mois:', error);
+      }
+    );
+  }
+
+  loadVerreData() {
+    // Appel à l'API pour récupérer les verres groupés par type
+    this.apiService.getMonturesByType().subscribe(
+      (response) => {
+        const types = response.map((item: any) => item.type);
+        const verreCounts = response.map((item: any) => item.count);
+        this.verreChart = new Chart('verreChart', {
+          type: 'bar', // Type de graphique : barres
+          data: {
+            labels: types, // Types de verres comme labels
+            datasets: [{
+              label: 'Verres par Type', // Légende du graphique
+              data: verreCounts, // Nombre de verres pour chaque type
+              backgroundColor: 'rgba(75, 192, 192, 0.2)', // Couleur des barres
+              borderColor: 'rgba(75, 192, 192, 1)', // Bordure des barres
+              borderWidth: 1 // Largeur de la bordure des barres
+            }]
+          },
+          options: {
+            responsive: true, // Adapter la taille du graphique
+            scales: {
+              y: {
+                beginAtZero: true // L'axe Y commence à 0
+              }
+            }
+          }
+        });
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des verres par type:', error); // Gérer les erreurs
+      }
+    );
   }
   
-  ngOnInit(): void {
-    this.loadTables();
+  loadOrdersByStatus() {
+    // Appel à l'API pour récupérer les commandes groupées par statut
+    this.apiService.getOrdersByStatus().subscribe(
+      (response) => {
+        // Réponse de l'API : récupérer les statuts et le nombre de commandes par statut
+        console.log("API REPSONSE STATUS : ",response);
+  
+        // Extraire les statuts (par exemple : 'En cours', 'Livrée', etc.)
+        const statuses = response.map((item: any) => item.statut);
+  
+        // Extraire le nombre de commandes pour chaque statut
+        const orderCounts = response.map((item: any) => item.count);
+  
+        // Création du graphique avec Chart.js
+        this.orderStatusChart = new Chart('orderStatusChart', {
+          type: 'bar', // Type de graphique (barres)
+          data: {
+            labels: statuses, // Statuts des commandes
+            datasets: [{
+              label: 'Nombre de Commandes par Statut', // Légende du graphique
+              data: orderCounts, // Nombre de commandes pour chaque statut
+              backgroundColor: 'rgba(75, 192, 192, 0.2)', // Couleur des barres
+              borderColor: 'rgba(75, 192, 192, 1)', // Bord des barres
+              borderWidth: 1 // Largeur des bordures
+            }]
+          },
+          options: {
+            responsive: true, // Adapter la taille du graphique à l'écran
+            scales: {
+              y: {
+                beginAtZero: true // Commencer l'axe Y à zéro
+              }
+            }
+          }
+        });
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des commandes par statut:', error);
+      }
+    );
   }
+
+  
+  loadClientData() {
+    this.apiService.getClientsByCity().subscribe(
+      (response) => {
+        console.log(response)
+        const cities = response.map((item: any) => item.city);
+        const clientCounts = response.map((item: any) => item.clientCount);
+
+        this.clientChart = new Chart('clientChart', {
+          type: 'bar',
+          data: {
+            labels: cities,
+            datasets: [{
+              label: 'Clients par Ville',
+              data: clientCounts,
+              backgroundColor: 'rgba(75, 192, 192, 0.2)',
+              borderColor: 'rgba(75, 192, 192, 1)',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: true,
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des données des clients:', error);
+      }
+    );
+  }
+  public config:any = {
+    type: 'bar',
+    data: {
+        labels: ["Catégorie A", "Catégorie B", "Catégorie C", "Catégorie D"],
+        datasets: [{
+            label: "Données statistiques",
+            data: [120, 190, 300, 250],
+            backgroundColor: ['blue', 'green', 'orange', 'red']
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { display: true }
+        }
+    },
+  }
+  constructor(private apiService: ApiService) {}
+  ngOnInit(): void {
+    this.chart = new Chart('myChart',this.config)
+    this.chart_3 = new Chart('myChart_3',this.config)
+    this.chart_4 = new Chart('myChart_4',this.config)
+
+    this.count_table_data("clients")
+    this.count_table_data("montures")
+    this.count_table_data("baskets")
+    this.count_table_data("prescriptions")
+    this.count_table_data("verres")
+
+    this. loadClientData();
+    this.loadOrdersByStatus()
+    this.loadTables();
+    this.loadMontureData()
+    this.loadVerreData()
+    this.loadUserTotals()
+
+  }
+
+  loadMontureData() {
+    this.apiService.getMonturesByMarque().subscribe(
+      (response) => {
+        console.log(response);
+        const marques = response.map((item: any) => item.marque);
+        const montureCounts = response.map((item: any) => item.count);
+
+        // Créer un graphique à barres
+        this.montureChart = new Chart('montureChart', {
+          type: 'bar',
+          data: {
+            labels: marques,
+            datasets: [{
+              label: 'Montures par Marque',
+              data: montureCounts,
+              backgroundColor: 'rgba(153, 102, 255, 0.2)', // Choisis la couleur que tu veux
+              borderColor: 'rgba(153, 102, 255, 1)', // Choisis la couleur de la bordure
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: true,
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des données des montures par marque:', error);
+      }
+    );
+  }
+
 
   // Charger les tables de la base de données
   loadTables(): void {
@@ -54,6 +324,36 @@ export class AdminPanelComponent implements OnInit {
       },
       (error) => {
         console.error('Erreur lors du chargement des tables:', error);
+      }
+    );
+  }
+
+  count_table_data(table) {
+    this.apiService.getTableData(table).subscribe(
+      (response) => {
+        switch (table) {
+          case "montures":
+            this.count_montures = response.data.length;
+            break;
+          case "baskets":
+            this.count_baskets = response.data.length;
+            break;
+          case "clients":
+            this.count_clients = response.data.length;
+            break;
+          case "prescriptions":
+            this.count_prescriptions = response.data.length;
+            break;
+          case "verres":
+            this.count_glasses = response.data.length;
+            break;
+          default:
+            console.log(`Table non gérée: ${table}`);
+            break;
+        }
+      },
+      (error) => {
+        console.error(`Erreur lors du chargement de la table ${table}:`, error);
       }
     );
   }

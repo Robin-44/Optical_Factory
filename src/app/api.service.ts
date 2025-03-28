@@ -10,7 +10,25 @@ import { Basket } from 'src/models/basket.model';
 })
 export class ApiService {
   constructor(private http: HttpClient) {}
-
+  getUserTotals(): Observable<any> {
+    return this.http.get<any>(`${config.apiUri}/api/commandes/user-total`);
+  }
+  getMontantsByMonth(): Observable<any>{
+    return this.http.get<any>(`${config.apiUri}/api/commandes/monthly-total`);
+  }
+  getMonturesByType(): Observable<any> {
+    return this.http.get<any>(`${config.apiUri}/api/montures/type-count`);
+  }
+  
+  getMonturesByMarque(): Observable<any> {
+    return this.http.get<any>(`${config.apiUri}/api/montures-by-brand`);
+  }
+  getOrdersByStatus():Observable<any>{
+    return this.http.get<any>(`${config.apiUri}/api/orders/status-count`);
+  }
+  getClientsByCity(): Observable<any> {
+    return this.http.get<any>(`${config.apiUri}/api/clients-by-city`);
+  }
    // Obtenir toutes les tables disponibles dans la base de données
    getTables(): Observable<any> {
     return this.http.get<any>(`${config.apiUri}/api/tables`);

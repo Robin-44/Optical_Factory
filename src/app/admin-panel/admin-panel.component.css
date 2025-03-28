@@ -1,0 +1,37 @@
+.main-section {
+    margin-left: 80px;
+}
+
+.center-index {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap:80px;
+    overflow-x: scroll;
+}
+.title {
+    text-align: center;
+    font-weight: bold;
+    font-size: 50px;
+}
+.banner-home {
+    margin-left: 20px;
+    height: 300px;
+    width: 98%;
+  }
+.banner-solde {
+    background: linear-gradient(45deg, #ff416c, #ff4b2b);
+    padding: 20px;
+    border-radius: 10px;
+    height: 120px;
+    color: #fff;
+  }
+  .banner-solde > h2, .banner-solde > p {
+    color: #fff;
+  }
+
+@media (max-width: 800px) {
+    .center-index {
+        flex-direction: column;
+    }
+}

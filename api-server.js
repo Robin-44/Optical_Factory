@@ -656,6 +656,110 @@ app.delete('/api/prescriptions/:id', checkJwt, async (req, res) => {
   }
 });
 
+app.get('/api/clients-by-city', async (req, res) => {
+  try {
+
+    const clients = await db.collection('clients').aggregate([
+      { 
+        $group: { 
+          _id: "$Ville",      
+          count: { $sum: 1 }  
+        } 
+      },
+      { 
+        $project: { 
+          city: "$_id",   
+          clientCount: "$count", 
+          _id: 0          
+        } 
+      }
+    ]).toArray(); 
+    res.status(200).json(clients); 
+  } catch (error) {
+    res.status(500).json({ message: "Erreur lors de la récupération des clients" });
+  }
+});
+app.get('/api/montures-by-brand', async (req, res) => {
+  try {
+    const statusCount = await db.collection('montures').aggregate([
+      {
+        $group: {
+          _id: "$Marque", // Regroupement par marque
+          count: { $sum: 1 } // Compter le nombre de montures par marque
+        }
+      },
+      {
+        $project: {
+          marque: "$_id", // Changer le nom de _id en marque
+          count: 1,
+          _id: 0
+        }
+      }
+    ]).toArray();
+    
+    res.status(200).json(statusCount); // Renvoyer les données sous forme de JSON
+  } catch (error) {
+    console.error("Erreur lors de la récupération des données des montures par marque", error);
+    res.status(500).send("Erreur serveur");
+  }
+});
+
+
+
+app.get('/api/orders/status-count', async (req, res) => {
+  try {
+    // Compter les commandes par statut
+    const statusCount = await db.collection('commandes').aggregate([
+      {
+        $group: {
+          _id: "$Statut", // Regroupement par statut
+          count: { $sum: 1 } // Compter le nombre de commandes pour chaque statut
+        }
+      },
+      {
+        $project: { // Changer le format de la réponse
+          statut: "$_id", // Remplacer _id par "statut"
+          count: 1,
+          _id: 0 // Ne pas inclure le champ _id dans la réponse
+        }
+      }
+    ]).toArray(); // Important : assure-toi d'appeler `toArray()` pour récupérer les résultats sous forme de tableau
+    
+
+    res.status(200).json(statusCount); // Retourner les résultats au frontend
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Impossible de récupérer les données des commandes par statut' });
+  }
+});
+
+app.get('/api/montures/type-count', async (req, res) => {
+  try {
+    // Regrouper les montures par "Type" et compter le nombre de montures pour chaque type
+    const montureCount = await db.collection('montures').aggregate([
+      {
+        $group: {
+          _id: "$Type", // Regrouper par Type de la monture
+          count: { $sum: 1 } // Compter le nombre de montures pour chaque type
+        }
+      },
+      {
+        $project: { // Formatter la réponse
+          type: "$_id", // Renommer _id en type
+          count: 1,
+          _id: 0 // Exclure le champ _id
+        }
+      }
+    ]).toArray(); // Récupérer les résultats sous forme de tableau
+
+    // Retourner les résultats au frontend
+    res.status(200).json(montureCount);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Impossible de récupérer les données des montures par type' });
+  }
+});
+
 // Server Setup
 const port = 3001;
 app.listen(port, () => console.log(`Server running on port ${port}`));
