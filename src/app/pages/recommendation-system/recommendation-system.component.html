@@ -1,8 +1,65 @@
 <app-nav-bar></app-nav-bar>
-
-<div class="container">
-    <div class="container" *ngIf="loading">Chargement des recommandations...</div>
-    <div  *ngIf="!loading && recommendedMontures.length > 0">
+<div class="glasse-view-banner">
+</div>
+<div class="button-container">
+    <button (click)="toggle_predict('api')" class="btn-prd-panier">Prédiction Panier</button>
+    <button (click)="toggle_predict('basket')" class="btn-prd-formulaire">Prédiction API</button>
+  </div>
+  
+<h1 class="text-center mt-4">Prédiction & Recommandation</h1>
+<div *ngIf="predict_api && !predict_basket" class="container mt-4">
+    <mat-horizontal-stepper [linear]="true" #stepper>
+      <form [formGroup]="formulaire">
+        <mat-step *ngFor="let step of steps; let i = index" [stepControl]="formStep[i]">
+          <ng-template matStepLabel>Étape {{ i + 1 }}</ng-template>
+  
+          <!-- Affichage de deux champs par étape -->
+          <div *ngFor="let champ of step">
+            <mat-form-field style="width: 100%;" class="full-width">
+              <mat-label>{{ champ.replace('_', ' ') }}</mat-label>
+              
+              <!-- Si le champ est une sélection, utiliser mat-select -->
+              <mat-select [formControlName]="champ" *ngIf="isSelection(champ)">
+                <mat-option *ngFor="let option of getColumnOptions(champ)" [value]="option">
+                  {{ option }}
+                </mat-option>
+              </mat-select>
+            
+              <!-- Si ce n'est pas une sélection, utiliser matInput -->
+              <input matInput *ngIf="!isSelection(champ)" [formControlName]="champ" placeholder="Entrez une valeur" />
+            </mat-form-field>
+          </div>
+  
+          <div class="stepper-buttons">
+            <button mat-button matStepperPrevious *ngIf="i > 0">Précédent</button>
+            <button mat-button matStepperNext *ngIf="i < steps.length - 1">Suivant</button>
+            <button mat-button color="primary" type="submit" (click)="soumettre()" *ngIf="i === steps.length - 1">Envoyer</button>
+          </div>
+        </mat-step>
+      </form>
+    </mat-horizontal-stepper>
+    <div *ngIf="predict_loading" class="loader">
+        <p>Chargement en cours...</p>
+        <div class="spinner"></div>
+      </div>
+    <div *ngIf="montures_recommandees && montures_recommandees.length > 0 && predict_loading == false">
+        <h2>Montures recommandées</h2>
+        <div *ngFor="let monture of montures_recommandees; let i = index" class="monture-card">
+          <p><strong>{{ i }}</strong></p>
+          <p><strong>Marque :</strong> {{ monture.Marque }}</p>
+          <p><strong>Forme :</strong> {{ monture.Forme }}</p>
+          <p><strong>Style :</strong> {{ monture.Style }}</p>
+          <p><strong>Couleur :</strong> {{ monture.Couleur }}</p>
+          <hr />
+        </div>
+      </div>
+  </div>
+  
+ 
+  
+  
+<div *ngIf="!predict_api && predict_basket" class="container-basket-recommendation">
+    <div *ngIf="!loading && recommendedMontures.length > 0">
     <h3>Montures Recommandées en fonction de votre panier</h3>
     <div class="recommended-items">
         <div *ngFor="let monture of recommendedMontures" class="recommended-item">
@@ -24,10 +81,8 @@
     <div *ngIf="recommendedMontures.length > 0 || recommendedVerres.length > 0">
         <button type="button" (click)="navigate_to_questionnaire()" class="mt-5 btn btn-primary">Répondez à notre questionnaire pour plus de recommandations</button>
     </div>
-
-    <!-- Message si aucune recommandation -->
-    <div *ngIf="!loading && recommendedMontures.length === 0 && recommendedVerres.length === 0" class="no-recommendation">
-    <p>Aucune recommandation disponible pour votre panier actuel.</p>
-    <button routerLink="/home" class="btn-back">Retour à l'accueil</button>
-    </div>
+    <div  class="no-recommendation">
+        <p *ngIf="!loading && recommendedMontures.length === 0 && recommendedVerres.length === 0" >Aucune recommandation disponible pour votre panier actuel.</p>
+        <button *ngIf="!loading && recommendedMontures.length === 0 && recommendedVerres.length === 0"  (click)="home()" class="btn-back">Retour à l'accueil</button>
+    </div>    
 </div>

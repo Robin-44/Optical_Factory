@@ -4,6 +4,7 @@ import { ApiService } from 'src/app/api.service';
 import { FormsModule } from '@angular/forms';
 import { Chart, registerables } from 'chart.js';
 import { NavBarComponent } from 'src/app/components/nav-bar/nav-bar.component';
+import { Router } from '@angular/router';
 
 Chart.register(...registerables);
 
@@ -51,7 +52,7 @@ export class AdminPanelComponent implements OnInit {
     { model: 'Gucci GG0061S', sales: 650 },
     { model: 'Maui Jim Peahi', sales: 600 }
   ];
-
+  constructor(private apiService: ApiService, private router:Router) {}
   loadUserTotals(): void {
     this.apiService.getUserTotals().subscribe(
       (response) => {
@@ -258,7 +259,7 @@ export class AdminPanelComponent implements OnInit {
         }
     },
   }
-  constructor(private apiService: ApiService) {}
+  
   ngOnInit(): void {
     this.chart = new Chart('myChart',this.config)
     this.chart_3 = new Chart('myChart_3',this.config)
@@ -392,4 +393,9 @@ export class AdminPanelComponent implements OnInit {
   showAddForm(): void {
     this.showForm = true;
   }
+
+  accessDataFrameStreamlit() {
+    window.location.href = 'http://localhost:8501/';
+  }
+  
 }

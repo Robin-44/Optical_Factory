@@ -14,6 +14,17 @@
     font-weight: bold;
     font-size: 50px;
 }
+.access-btn-power-bi {
+  display: block;
+  margin: auto;
+  background: linear-gradient(45deg, #ff416c, #ff4b2b);
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
 .banner-home {
     margin-left: 20px;
     height: 300px;

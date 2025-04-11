@@ -65,7 +65,7 @@ app.post('/api/register', checkJwt, async (req, res) => {
     // Récupère les données envoyées par le client
     const { username, email, sub } = req.body;
     let address = "8 allée de la cours";  // Valeur par défaut pour l'adresse
-
+    
     // Vérifie si les champs 'username' et 'email' sont présents
     if (!username || !email) {
       return res.status(400).json({ message: 'Name and email are required.' });
@@ -73,7 +73,6 @@ app.post('/api/register', checkJwt, async (req, res) => {
 
     // Vérification si un client avec cet email existe déjà dans la base de données
     const existingClient = await db.collection('clients').findOne({sub : sub });
-
     if (existingClient) {
       return res.status(400).json({ message: 'Client already exists with this email.' });
     }
@@ -95,10 +94,8 @@ app.post('/api/register', checkJwt, async (req, res) => {
       updatedAt: new Date().toISOString(),
       
     };
-
     // Insertion du nouveau client dans la base de données
     const result = await db.collection('clients').insertOne(client);
-
     // Retourne une réponse avec le client créé
     res.status(201).json({result, message: "Utilisateur ajouté avec succès" });
 
@@ -446,7 +443,6 @@ app.get('/api/tables/:tableName', async (req, res) => {
 app.get('/api/montures', async (req, res) => {
   try {
     const montures = await db.collection('montures').find().toArray();
-    console.log(montures)
     res.status(200).json(montures);
   } catch (err) {
     res.status(400).json({ message: err.message });
@@ -705,8 +701,24 @@ app.get('/api/montures-by-brand', async (req, res) => {
 });
 
 
+app.get('/api/montures/get-all', async (req, res) => {
+  try {
+    const montures = await db.collection('montures').find().toArray();  // Récupérer toutes les données de la collection "montures"
+    
+    if (montures.length === 0) {
+      return res.status(404).json({ message: 'Aucune monture trouvée.' });  // Si aucune donnée n'est trouvée
+    }
 
-app.get('/api/orders/status-count', async (req, res) => {
+    res.status(200).json(montures);  // Retourner les données sous forme de JSON
+  } catch (error) {
+    console.error("Erreur lors de la récupération des données des montures:", error);
+    res.status(500).json({ error: "Erreur serveur lors de la récupération des montures" });  // Si une erreur se produit
+  }
+});
+
+
+
+app.get('/api/orders/status-count',checkJwt,  async (req, res) => {
   try {
     // Compter les commandes par statut
     const statusCount = await db.collection('commandes').aggregate([
@@ -733,7 +745,7 @@ app.get('/api/orders/status-count', async (req, res) => {
   }
 });
 
-app.get('/api/montures/type-count', async (req, res) => {
+app.get('/api/montures/type-count',checkJwt,  async (req, res) => {
   try {
     // Regrouper les montures par "Type" et compter le nombre de montures pour chaque type
     const montureCount = await db.collection('montures').aggregate([
@@ -759,6 +771,23 @@ app.get('/api/montures/type-count', async (req, res) => {
     res.status(500).json({ error: 'Impossible de récupérer les données des montures par type' });
   }
 });
+
+app.post('/api/proxy/recommander', async (req, res) => {
+  try {
+    const response = await fetch('https://optical-api.onrender.com/recommander', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(req.body)
+    });
+
+    const data = await response.json();
+    res.json(data);
+  } catch (error) {
+    res.status(500).send("Erreur serveur");
+  }
+});
+
+
 
 // Server Setup
 const port = 3001;

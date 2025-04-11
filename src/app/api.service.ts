@@ -10,6 +10,7 @@ import { Basket } from 'src/models/basket.model';
 })
 export class ApiService {
   constructor(private http: HttpClient) {}
+
   getUserTotals(): Observable<any> {
     return this.http.get<any>(`${config.apiUri}/api/commandes/user-total`);
   }
@@ -134,4 +135,9 @@ export class ApiService {
   getPrescriptionById$(prescriptionId: string): Observable<any> {
     return this.http.get<any>(`${config.apiUri}/api/prescriptions/${prescriptionId}`);
   }
+  recommander(body:object){
+    return this.http.post<any>(`${config.apiUri}/api/proxy/recommander`,body);
+  }
+
+
 }

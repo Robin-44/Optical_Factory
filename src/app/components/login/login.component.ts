@@ -54,8 +54,6 @@ export class LoginComponent {
               sub: user.sub          // L'identifiant unique de l'utilisateur (peut être utile)
             };
             console.log("USER : ",userData)
-
-        
             // Envoyer les données de l'utilisateur à l'API
             this.apiService.register(userData).subscribe(
               response => {

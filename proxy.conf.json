@@ -1,0 +1,9 @@
+{
+    "/api": {
+      "target": "https://optical-api.onrender.com",
+      "secure": false,
+      "changeOrigin": true,
+      "logLevel": "debug"
+    }
+  }
+  
