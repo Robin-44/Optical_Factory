@@ -1,17 +1,26 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ApiService } from 'src/app/api.service';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Chart, registerables } from 'chart.js';
 import { NavBarComponent } from 'src/app/components/nav-bar/nav-bar.component';
 import { Router } from '@angular/router';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 
 Chart.register(...registerables);
 
 @Component({
   selector: 'app-admin-panel',
   standalone: true,
-  imports: [CommonModule, FormsModule,NavBarComponent],
+  imports: [CommonModule, FormsModule,NavBarComponent,    FormsModule,
+    ReactiveFormsModule,
+    MatStepperModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule],
   templateUrl: './admin-panel.component.html',
   styleUrls: ['./admin-panel.component.css']
 })
@@ -46,9 +55,25 @@ export class AdminPanelComponent implements OnInit {
   };
   // Données des lunettes les plus vendues
   public topLunettes:any;
-
-  constructor(private apiService: ApiService, private router:Router) {}
-
+  stepperVerre: FormGroup;
+  constructor(private apiService: ApiService, private router:Router, private fb: FormBuilder) {
+    this.stepperVerre = this.fb.group({
+      type: ['', Validators.required],
+      indiceRefraction: ['', [Validators.required, Validators.min(1), Validators.max(2)]],
+      traitements: [''],
+      teinte: [''],
+      compatibilite: [''],
+      categorieProtection: [''],
+      securite: [''],
+      prix: ['', [Validators.required, Validators.min(1)]],
+      stock: ['', [Validators.required, Validators.min(0)]],
+      solaire: [false]
+    });
+  }
+  submitVerre() {
+    console.log('Données du verre:', this.stepperVerre.value);
+    alert('Verre ajouté avec succès !');
+  }
   fetchData(): void {
     this.apiService.getPrescriptions$().subscribe(data => {
       const aujourdHui = new Date();

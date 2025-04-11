@@ -87,11 +87,106 @@
     </div>
   </div>
 
+  <h1 class="title">AJOUTER des Nouveaux Verres</h1>
+  <mat-horizontal-stepper linear #stepper>
+    <!-- Étape 1 -->
+    <mat-step [stepControl]="stepperVerre.controls['type']">
+      <form [formGroup]="stepperVerre">
+        <h3>Informations générales</h3>
+        <mat-form-field appearance="outline">
+          <mat-label>Type</mat-label>
+          <input matInput formControlName="type" placeholder="Ex: Progressif">
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline">
+          <mat-label>Indice de Réfraction</mat-label>
+          <input matInput type="number" formControlName="indiceRefraction" placeholder="Ex: 1.5">
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline">
+          <mat-label>Traitements</mat-label>
+          <input matInput formControlName="traitements" placeholder="Ex: Anti-reflet">
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline">
+          <mat-label>Teinte</mat-label>
+          <input matInput formControlName="teinte" placeholder="Ex: Gris">
+        </mat-form-field>
+  
+        <button mat-button matStepperNext>Suivant</button>
+      </form>
+    </mat-step>
+  
+    <!-- Étape 2 -->
+    <mat-step>
+      <form [formGroup]="stepperVerre">
+        <h3>Compatibilité et caractéristiques</h3>
+        <mat-form-field appearance="outline">
+          <mat-label>Compatibilité</mat-label>
+          <input matInput formControlName="compatibilite" placeholder="Ex: Adapté aux montures métal">
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline">
+          <mat-label>Catégorie de Protection</mat-label>
+          <input matInput formControlName="categorieProtection" placeholder="Ex: UV400">
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline">
+          <mat-label>Sécurité</mat-label>
+          <input matInput formControlName="securite" placeholder="Ex: Anti-rayure">
+        </mat-form-field>
+  
+        <button mat-button matStepperPrevious>Précédent</button>
+        <button mat-button matStepperNext>Suivant</button>
+      </form>
+    </mat-step>
+  
+    <!-- Étape 3 -->
+    <mat-step>
+      <form [formGroup]="stepperVerre">
+        <h3>Prix et stock</h3>
+        <mat-form-field appearance="outline">
+          <mat-label>Prix (€)</mat-label>
+          <input matInput type="number" formControlName="prix" placeholder="Ex: 120">
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline">
+          <mat-label>Stock</mat-label>
+          <input matInput type="number" formControlName="stock" placeholder="Ex: 50">
+        </mat-form-field>
+  
+        <mat-slide-toggle formControlName="solaire">Solaire</mat-slide-toggle>
+  
+        <button mat-button matStepperPrevious>Précédent</button>
+        <button mat-button matStepperNext>Suivant</button>
+      </form>
+    </mat-step>
+  
+    <!-- Étape 4 : Résumé -->
+    <mat-step>
+      <h3>Résumé</h3>
+      <p><strong>Type:</strong> {{ stepperVerre.value.type }}</p>
+      <p><strong>Indice de Réfraction:</strong> {{ stepperVerre.value.indiceRefraction }}</p>
+      <p><strong>Traitements:</strong> {{ stepperVerre.value.traitements }}</p>
+      <p><strong>Teinte:</strong> {{ stepperVerre.value.teinte }}</p>
+      <p><strong>Compatibilité:</strong> {{ stepperVerre.value.compatibilite }}</p>
+      <p><strong>Catégorie de Protection:</strong> {{ stepperVerre.value.categorieProtection }}</p>
+      <p><strong>Sécurité:</strong> {{ stepperVerre.value.securite }}</p>
+      <p><strong>Prix:</strong> {{ stepperVerre.value.prix }}€</p>
+      <p><strong>Stock:</strong> {{ stepperVerre.value.stock }}</p>
+      <p><strong>Solaire:</strong> {{ stepperVerre.value.solaire ? 'Oui' : 'Non' }}</p>
+  
+      <button mat-button matStepperPrevious>Précédent</button>
+      <button mat-button (click)="submitVerre()">Confirmer</button>
+    </mat-step>
+  </mat-horizontal-stepper>
+  
   <div class="container mt-4">
     <div class="row text-center">
       <div class="col-md-3">
         <div class="card shadow-sm p-3">
-          <h4>Division 1</h4>
+          <h4>Formulaire 1 </h4>
+
         </div>
       </div>
       <div class="col-md-3">
