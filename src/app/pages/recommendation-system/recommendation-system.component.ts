@@ -116,7 +116,7 @@ soumettre() {
       }
     );
   }
-  genre: string[] = ['Homme','Femme','non-bianire'];
+  genre: string[] = ['Homme','Femme','Non-binaire'];
   marque: string[] = [];
   type: string[] = [];
   forme: string[] = [];
@@ -163,27 +163,24 @@ soumettre() {
     }
     return chunks;
   }
-
-  // Vérifier si un champ est une sélection (dropdown)
   isSelection(champ: string): boolean {
     const selectionColumns = ['Genre','Marque', 'Modele', 'Type', 'Forme', 'Materiau', 'Couleur', 'Style', 'Taille_Lens', 'Taille_Bridge','Taille_Temple', 'Age'];
     return selectionColumns.includes(champ);
   }
-
   getColumnOptions(champ: string): string[] {
     const options: { [key: string]: string[] } = {
-      'Genre': this.genre,
-      'Marque': this.marque,
-      'Modele': this.modele,
-      'Type': this.type,
-      'Forme': this.forme,
-      'Materiau': this.materiau,
-      'Couleur': this.couleur,
-      'Style': this.style,
-      'Age': Array.from({ length: 10 }, (_, i) => (i * 10).toString()) ,
-      'Taille_Lens': Array.from({ length: 10 }, (_, i) => (i * 10).toString()) ,
+      'Genre': [...new Set(this.genre)],
+      'Marque': [...new Set(this.marque)],
+      'Modele': [...new Set(this.modele)],
+      'Type': [...new Set(this.type)],
+      'Forme': [...new Set(this.forme)],
+      'Materiau': [...new Set(this.materiau)],
+      'Couleur': [...new Set(this.couleur)],
+      'Style': [...new Set(this.style)],
+      'Age': Array.from({ length: 10 }, (_, i) => (i * 10).toString()),
+      'Taille_Lens': Array.from({ length: 10 }, (_, i) => (i * 10).toString()),
       'Taille_Bridge': Array.from({ length: 10 }, (_, i) => (i * 10).toString()),
-      'Taille_Temple': Array.from({ length: 10 }, (_, i) => (i * 10).toString()) 
+      'Taille_Temple': Array.from({ length: 10 }, (_, i) => (i * 10).toString())
     };
   
     return options[champ] || [];

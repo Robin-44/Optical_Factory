@@ -45,7 +45,6 @@
     <div *ngIf="montures_recommandees && montures_recommandees.length > 0 && predict_loading == false">
         <h2>Montures recommandées</h2>
         <div *ngFor="let monture of montures_recommandees; let i = index" class="monture-card">
-          <p><strong>{{ i }}</strong></p>
           <p><strong>Marque :</strong> {{ monture.Marque }}</p>
           <p><strong>Forme :</strong> {{ monture.Forme }}</p>
           <p><strong>Style :</strong> {{ monture.Style }}</p>
@@ -79,10 +78,7 @@
     </div>
     </div>
     <div *ngIf="recommendedMontures.length > 0 || recommendedVerres.length > 0">
-        <button type="button" (click)="navigate_to_questionnaire()" class="mt-5 btn btn-primary">Répondez à notre questionnaire pour plus de recommandations</button>
-    </div>
-    <div  class="no-recommendation">
-        <p *ngIf="!loading && recommendedMontures.length === 0 && recommendedVerres.length === 0" >Aucune recommandation disponible pour votre panier actuel.</p>
-        <button *ngIf="!loading && recommendedMontures.length === 0 && recommendedVerres.length === 0"  (click)="home()" class="btn-back">Retour à l'accueil</button>
-    </div>    
+        <button type="button" style="width: 300px;display: block;margin: auto;" (click)="navigate_to_questionnaire()" class="mt-5 btn btn-primary">Remplir questionnaire</button>
+        <button *ngIf="recommendedMontures.length === 0 && recommendedVerres.length === 0"  (click)="home()" class="btn-back">Retour à l'accueil</button>
+    </div>  
 </div>

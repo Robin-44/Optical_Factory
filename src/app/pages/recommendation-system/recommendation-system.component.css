@@ -6,6 +6,7 @@
   /* Section contenant les recommandations */
   .recommended-items {
     display: flex;
+    justify-content: center;
     flex-wrap: wrap;
     gap: 20px;
   }
@@ -36,6 +37,9 @@
     padding: 10px;
     text-align: center;
     width: 150px;  /* Ajuste en fonction de la taille souhaitée pour chaque item */
+  }
+  h3 {
+    text-align: center;
   }
   
   .recommended-item img {
