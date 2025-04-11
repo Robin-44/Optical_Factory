@@ -29,30 +29,62 @@ export class AdminPanelComponent implements OnInit {
   public count_orders:any = 0; 
   public chart:any;
 
-  public chart_3:any;
-  public chart_4:any;
   public clientChart:any;
   public orderStatusChart:any;
   public montureChart:any;
   public verreChart:any;
   public commandChart:any;
-  public progressData = {
-    task1: 50,
-    task2: 75,
-    task3: 30,
-    task4: 60
-  };
   userTotals: any[] = [];
   userChart: any;
+  prescriptions = { total: 0, traitees: 0 };
+
+  progressData = {
+    ventesPersol: 0,
+    ventesRayBan: 0,
+    ventesOakley: 0,
+    prescriptions: 0
+  };
   // Données des lunettes les plus vendues
-  public topLunettes = [
-    { model: 'Ray-Ban Aviator', sales: 1200 },
-    { model: 'Oakley Holbrook', sales: 950 },
-    { model: 'Prada Linea Rossa', sales: 800 },
-    { model: 'Gucci GG0061S', sales: 650 },
-    { model: 'Maui Jim Peahi', sales: 600 }
-  ];
+  public topLunettes:any;
+
   constructor(private apiService: ApiService, private router:Router) {}
+
+  fetchData(): void {
+    this.apiService.getPrescriptions$().subscribe(data => {
+      const aujourdHui = new Date();
+      console.log("PRESCIPRTIONS := ",data)
+      this.prescriptions = {
+        total: data.length,
+        traitees: data.filter(p => {
+          const datePrescription = new Date(p.createdAt);
+          const diffJours = (aujourdHui.getTime() - datePrescription.getTime()) / (1000 * 3600 * 24);
+          return diffJours > 7; // Considérer "traitée" si plus de 7 jours
+        }).length
+      };
+
+      console.log(this.prescriptions)
+  
+      this.calculerProgression();
+    });
+  }
+
+  calculerProgression(): void {
+    if (this.topLunettes.length > 0) {
+      const totalVentes = this.topLunettes.reduce((sum, m) => sum + m.Ventes, 0) || 1; // Évite division par 0
+
+      const persol = this.topLunettes.find(m => m.Marque === 'Persol')?.Ventes || 0;
+      const rayban = this.topLunettes.find(m => m.Marque === 'Ray-Ban')?.Ventes || 0;
+      const oakley = this.topLunettes.find(m => m.Marque === 'Oakley')?.Ventes || 0;
+
+      this.progressData.ventesPersol = (persol / totalVentes) * 100;
+      this.progressData.ventesRayBan = (rayban / totalVentes) * 100;
+      this.progressData.ventesOakley = (oakley / totalVentes) * 100;
+    }
+
+    if (this.prescriptions.total > 0) {
+      this.progressData.prescriptions = (this.prescriptions.traitees / this.prescriptions.total) * 100;
+    }
+  }
   loadUserTotals(): void {
     this.apiService.getUserTotals().subscribe(
       (response) => {
@@ -261,10 +293,17 @@ export class AdminPanelComponent implements OnInit {
   }
   
   ngOnInit(): void {
-    this.chart = new Chart('myChart',this.config)
-    this.chart_3 = new Chart('myChart_3',this.config)
-    this.chart_4 = new Chart('myChart_4',this.config)
+    this.fetchData();
+    this.apiService.getMontures().subscribe(
+      data => {
+        this.topLunettes = data.sort((a, b) => a.Prix - b.Prix);
+      },
+      error => {
+        console.error('Erreur lors de la récupération des données', error);
+      }
+    );
 
+    this.chart = new Chart('myChart',this.config)
     this.count_table_data("clients")
     this.count_table_data("montures")
     this.count_table_data("baskets")

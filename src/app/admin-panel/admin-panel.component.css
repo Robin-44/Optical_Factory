@@ -3,10 +3,10 @@
 }
 
 .center-index {
-    display: flex;
+  display: flex;
+  padding: 20px;
     justify-content: center;
     align-items: center;
-    gap:80px;
     overflow-x: scroll;
 }
 .title {
@@ -39,6 +39,13 @@
   }
   .banner-solde > h2, .banner-solde > p {
     color: #fff;
+  }
+  .progress {
+    display: block;
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 400px;
   }
 
 @media (max-width: 800px) {
