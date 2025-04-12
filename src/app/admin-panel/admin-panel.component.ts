@@ -9,6 +9,7 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import Swal from 'sweetalert2';
 
 Chart.register(...registerables);
 
@@ -30,6 +31,7 @@ export class AdminPanelComponent implements OnInit {
   tableData: any[] = [];
   newRow: any = {};
   showForm = false;
+  
   public count_montures:any = 0; 
   public count_baskets:any = 0; 
   public count_clients:any = 0; 
@@ -56,6 +58,9 @@ export class AdminPanelComponent implements OnInit {
   // Données des lunettes les plus vendues
   public topLunettes:any;
   stepperVerre: FormGroup;
+  step1!: FormGroup;
+  step2!: FormGroup;
+  step3!: FormGroup;
   constructor(private apiService: ApiService, private router:Router, private fb: FormBuilder) {
     this.stepperVerre = this.fb.group({
       type: ['', Validators.required],
@@ -69,11 +74,94 @@ export class AdminPanelComponent implements OnInit {
       stock: ['', [Validators.required, Validators.min(0)]],
       solaire: [false]
     });
+    this.step1 = this.fb.group({
+      Nom: ['', Validators.required],
+      Prenom: ['', Validators.required],
+      Date_Naissance: ['', Validators.required],
+      Genre: ['']
+    });
+
+    this.step2 = this.fb.group({
+      Adresse: [''],
+      Ville: [''],
+      Code_Postal: [''],
+      Pays: ['']
+    });
+
+    this.step3 = this.fb.group({
+      Email: ['', [Validators.required, Validators.email]],
+      Telephone: [''],
+      Frequence_Achat: [''],
+      Mode_Paiement_Favori: [''],
+      Preferences_Communication: ['']
+    });
+
+
+
+  }
+
+
+  submitClient() {
+  
+    const fullData = {
+      ...this.step1.value,
+      ...this.step2.value,
+      ...this.step3.value
+    };
+    console.log('Client complet :', fullData);
+    this.apiService.postClients(fullData).subscribe(
+      response => {
+        console.log('Utilisateur ajoutés avec succès', response);
+        
+        // Affichage de l'alerte SweetAlert en cas de succès
+        Swal.fire({
+          icon: 'success',
+          title: 'Succès',
+          text: 'Le clients a été ajoutés avec succès !',
+          confirmButtonText: 'OK',
+        });
+      },
+      error => {
+        console.error('Erreur lors de l’ajout', error);
+        
+        // Affichage de l'alerte SweetAlert en cas d'erreur
+        Swal.fire({
+          icon: 'error',
+          title: 'Erreur',
+          text: 'Une erreur est survenue lors de l\'ajout du client.',
+          confirmButtonText: 'OK',
+        });
+      }
+    );
+    // appel à un service ici
   }
   submitVerre() {
-    console.log('Données du verre:', this.stepperVerre.value);
-    alert('Verre ajouté avec succès !');
+    this.apiService.postGlasses(this.stepperVerre.value).subscribe(
+      response => {
+        console.log('Verres ajoutés avec succès', response);
+        
+        // Affichage de l'alerte SweetAlert en cas de succès
+        Swal.fire({
+          icon: 'success',
+          title: 'Succès',
+          text: 'Les verres ont été ajoutés avec succès !',
+          confirmButtonText: 'OK',
+        });
+      },
+      error => {
+        console.error('Erreur lors de l’ajout', error);
+        
+        // Affichage de l'alerte SweetAlert en cas d'erreur
+        Swal.fire({
+          icon: 'error',
+          title: 'Erreur',
+          text: 'Une erreur est survenue lors de l\'ajout des verres.',
+          confirmButtonText: 'OK',
+        });
+      }
+    );
   }
+  
   fetchData(): void {
     this.apiService.getPrescriptions$().subscribe(data => {
       const aujourdHui = new Date();

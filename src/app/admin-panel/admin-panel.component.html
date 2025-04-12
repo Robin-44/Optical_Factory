@@ -87,12 +87,12 @@
     </div>
   </div>
 
-  <h1 class="title">AJOUTER des Nouveaux Verres</h1>
+  <h3 class="title"><i class="fas fa-glasses"></i> AJOUTER DES VERRES</h3>
   <mat-horizontal-stepper linear #stepper>
     <!-- Étape 1 -->
     <mat-step [stepControl]="stepperVerre.controls['type']">
       <form [formGroup]="stepperVerre">
-        <h3>Informations générales</h3>
+        <ng-template matStepLabel>Infos Générales verres</ng-template>
         <mat-form-field appearance="outline">
           <mat-label>Type</mat-label>
           <input matInput formControlName="type" placeholder="Ex: Progressif">
@@ -112,8 +112,8 @@
           <mat-label>Teinte</mat-label>
           <input matInput formControlName="teinte" placeholder="Ex: Gris">
         </mat-form-field>
-  
-        <button mat-button matStepperNext>Suivant</button>
+        <button style="margin-left: 100px;" mat-button matStepperNext>Suivant</button>
+   
       </form>
     </mat-step>
   
@@ -155,7 +155,7 @@
           <input matInput type="number" formControlName="stock" placeholder="Ex: 50">
         </mat-form-field>
   
-        <mat-slide-toggle formControlName="solaire">Solaire</mat-slide-toggle>
+        <mat-slide-toggle style="visibility: hidden;" formControlName="solaire">Solaire</mat-slide-toggle>
   
         <button mat-button matStepperPrevious>Précédent</button>
         <button mat-button matStepperNext>Suivant</button>
@@ -164,20 +164,138 @@
   
     <!-- Étape 4 : Résumé -->
     <mat-step>
-      <h3>Résumé</h3>
-      <p><strong>Type:</strong> {{ stepperVerre.value.type }}</p>
-      <p><strong>Indice de Réfraction:</strong> {{ stepperVerre.value.indiceRefraction }}</p>
-      <p><strong>Traitements:</strong> {{ stepperVerre.value.traitements }}</p>
-      <p><strong>Teinte:</strong> {{ stepperVerre.value.teinte }}</p>
-      <p><strong>Compatibilité:</strong> {{ stepperVerre.value.compatibilite }}</p>
-      <p><strong>Catégorie de Protection:</strong> {{ stepperVerre.value.categorieProtection }}</p>
-      <p><strong>Sécurité:</strong> {{ stepperVerre.value.securite }}</p>
-      <p><strong>Prix:</strong> {{ stepperVerre.value.prix }}€</p>
-      <p><strong>Stock:</strong> {{ stepperVerre.value.stock }}</p>
-      <p><strong>Solaire:</strong> {{ stepperVerre.value.solaire ? 'Oui' : 'Non' }}</p>
-  
+      <h3 style="color: #1565c0; font-weight: bold;">Résumé</h3>
+
+<table style="width: 100%; border-collapse: collapse; margin-top: 16px;">
+  <thead>
+    <tr style="background-color: #1565c0; color: white;">
+      <th style="padding: 12px; border: 1px solid #ccc;">Champ</th>
+      <th style="padding: 12px; border: 1px solid #ccc;">Valeur</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of [
+      { label: 'Type', value: stepperVerre.value.type },
+      { label: 'Indice de Réfraction', value: stepperVerre.value.indiceRefraction },
+      { label: 'Traitements', value: stepperVerre.value.traitements },
+      { label: 'Teinte', value: stepperVerre.value.teinte },
+      { label: 'Compatibilité', value: stepperVerre.value.compatibilite },
+      { label: 'Catégorie de Protection', value: stepperVerre.value.categorieProtection },
+      { label: 'Sécurité', value: stepperVerre.value.securite },
+      { label: 'Prix (€)', value: stepperVerre.value.prix },
+      { label: 'Stock', value: stepperVerre.value.stock },
+      { label: 'Solaire', value: stepperVerre.value.solaire ? 'Oui' : 'Non' }
+    ]">
+      <td style="background-color: #e3f2fd; padding: 10px; border: 1px solid #ccc;">{{ item.label }}</td>
+      <td style="background-color: #e3f2fd; padding: 10px; border: 1px solid #ccc;">{{ item.value }}</td>
+    </tr>
+  </tbody>
+</table>
+
       <button mat-button matStepperPrevious>Précédent</button>
       <button mat-button (click)="submitVerre()">Confirmer</button>
+    </mat-step>
+  </mat-horizontal-stepper>
+
+  <h3 class="title"><i class="fas fa-users"></i> AJOUTER DES CLIENTS</h3>
+  <mat-horizontal-stepper linear>
+    <!-- Step 1 -->
+    <mat-step [stepControl]="step1">
+      <form [formGroup]="step1">
+        <ng-template matStepLabel>Infos personnelles clients</ng-template>
+  
+        <mat-form-field appearance="outline">
+          <mat-label>Nom</mat-label>
+          <input matInput formControlName="Nom">
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline">
+          <mat-label>Prénom</mat-label>
+          <input matInput formControlName="Prenom">
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline">
+          <mat-label>Date de naissance</mat-label>
+          <input matInput type="date" formControlName="Date_Naissance">
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline">
+          <mat-label>Genre</mat-label>
+          <input matInput formControlName="Genre">
+        </mat-form-field>
+
+          <button style="margin-left: 100px;" mat-button matStepperNext>Suivant</button>
+  
+      </form>
+    </mat-step>
+  
+    <!-- Step 2 -->
+    <mat-step [stepControl]="step2">
+      <form [formGroup]="step2">
+        <ng-template matStepLabel>Adresse</ng-template>
+  
+        <mat-form-field appearance="outline">
+          <mat-label>Adresse</mat-label>
+          <input matInput formControlName="Adresse">
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline">
+          <mat-label>Ville</mat-label>
+          <input matInput formControlName="Ville">
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline">
+          <mat-label>Code Postal</mat-label>
+          <input matInput formControlName="Code_Postal">
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline">
+          <mat-label>Pays</mat-label>
+          <input matInput formControlName="Pays">
+        </mat-form-field>
+  
+        <div>
+          <button mat-button matStepperPrevious>Retour</button>
+          <button mat-button matStepperNext>Suivant</button>
+        </div>
+      </form>
+    </mat-step>
+  
+    <!-- Step 3 -->
+    <mat-step [stepControl]="step3">
+      <form [formGroup]="step3">
+        <ng-template matStepLabel>Contact & Préférences</ng-template>
+  
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="Email">
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline">
+          <mat-label>Téléphone</mat-label>
+          <input matInput formControlName="Telephone">
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline">
+          <mat-label>Fréquence d'achat</mat-label>
+          <input matInput formControlName="Frequence_Achat">
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline">
+          <mat-label>Mode de paiement favori</mat-label>
+          <input matInput formControlName="Mode_Paiement_Favori">
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline">
+          <mat-label>Préférences de communication</mat-label>
+          <input matInput formControlName="Preferences_Communication">
+        </mat-form-field>
+  
+        <div>
+          <button mat-button matStepperPrevious>Retour</button>
+          <button mat-raised-button color="primary" (click)="submitClient()">Soumettre</button>
+        </div>
+      </form>
     </mat-step>
   </mat-horizontal-stepper>
   

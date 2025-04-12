@@ -163,6 +163,47 @@ app.get('/api/recommendations/panier', checkJwt, async (req, res) => {
   }
 });
 
+app.post('/api/glasses', async (req, res) => {
+  try {
+    const glassData = req.body;
+
+    // Validation basique
+    if (!glassData.type || !glassData.indiceRefraction || !glassData.prix || glassData.stock == null) {
+      return res.status(400).json({ message: 'Certains champs obligatoires sont manquants.' });
+    }
+
+    // Vérification d'existence d'un verre similaire
+    const existingGlass = await db.collection('verres').findOne({
+      type: glassData.type,
+      indiceRefraction: glassData.indiceRefraction,
+      traitements: glassData.traitements,
+      teinte: glassData.teinte,
+      compatibilite: glassData.compatibilite,
+      categorieProtection: glassData.categorieProtection,
+      securite: glassData.securite,
+      solaire: glassData.solaire
+    });
+
+    if (existingGlass) {
+      return res.status(409).json({ message: 'Ce verre existe déjà dans la base de données.' });
+    }
+
+    // Insertion
+    const result = await db.collection('verres').insertOne(glassData);
+
+    res.status(201).json({
+      message: 'Verre ajouté avec succès.',
+      id: result.insertedId
+    });
+
+  } catch (error) {
+    console.error('Erreur lors de l\'insertion dans la collection "verres" :', error);
+    res.status(500).json({ message: 'Erreur serveur lors de l\'ajout des verres.' });
+  }
+});
+
+
+
 
 
 app.get('/api/panier/count', checkJwt, async (req, res) => {
@@ -787,7 +828,24 @@ app.post('/api/proxy/recommander', async (req, res) => {
   }
 });
 
+app.post('/api/clients', async (req, res) => {
+  try {
+    // Récupérer les données du client envoyées dans la requête
+    const clientData = req.body;
 
+    const result = await db.collection('clients').insertOne(clientData);
+    // Répondre avec les données sauvegardées
+    res.status(201).json({
+      message: 'Client ajouté avec succès',
+      client: result
+    });
+  } catch (error) {
+    console.error('Erreur lors de l\'ajout du client:', error);
+    res.status(500).json({
+      message: 'Erreur serveur lors de l\'ajout du client'
+    });
+  }
+});
 
 // Server Setup
 const port = 3001;

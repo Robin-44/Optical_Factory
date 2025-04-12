@@ -7,4 +7,5 @@ export interface Client {
   sub:string;
   createdAt?: string; // Optional, could be added by the backend
   updatedAt?: string; // Optional, could be added by the backend
+  
 }

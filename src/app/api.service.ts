@@ -4,13 +4,38 @@ import config from '../../auth_config.json';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Monture } from 'src/models/monture.model';
 import { Basket } from 'src/models/basket.model';
+import { Client } from 'src/models/client.model';
+import { ClientForms } from 'src/models/clientForms.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
   constructor(private http: HttpClient) {}
-
+  postGlasses(glassData: {
+    type: string;
+    indiceRefraction: number;
+    traitements?: string;
+    teinte?: string;
+    compatibilite?: string;
+    categorieProtection?: string;
+    securite?: string;
+    prix: number;
+    stock: number;
+    solaire: boolean;
+  }): Observable<any> {
+    console.log('Données des verres envoyées :', glassData);
+    return this.http.post(`${config.apiUri}/api/glasses`, glassData);
+  }
+  postClients(client: ClientForms): Observable<any> {
+    console.log('Données du client envoyées :', client);
+    return this.http.post(`${config.apiUri}/api/clients`, client);
+  }
+  register(userData: { username: string; email: string; sub: string }): Observable<any> {
+    console.log('User data being sent:', userData);  // Affiche les données avant l'envoi
+    return this.http.post(`${config.apiUri}/api/register`, userData);
+  }
+  
   getUserTotals(): Observable<any> {
     return this.http.get<any>(`${config.apiUri}/api/commandes/user-total`);
   }
@@ -58,10 +83,7 @@ export class ApiService {
   getVerres(): Observable<string[]> {
     return this.http.get<string[]>(`${config.apiUri}/api/verres`);
   }
-  register(userData: { username: string; email: string; sub: string }): Observable<any> {
-    console.log('User data being sent:', userData);  // Affiche les données avant l'envoi
-    return this.http.post(`${config.apiUri}/api/register`, userData);
-  }
+
   // Ping method to check API connectivity
   ping$() {
     return this.http.get(`${config.apiUri}/api/external`);
